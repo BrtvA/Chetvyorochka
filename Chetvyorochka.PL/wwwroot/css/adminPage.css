@@ -1,0 +1,128 @@
+﻿.form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 1280px;
+    height: 800px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    background: #4712d0;
+    overflow: auto;
+}
+
+.addProductType_group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.addProduct_group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+/*Стиль кнопок*/
+.action_button {
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.addProduct_button {
+    width: 150px;
+    height: 60px;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: #0071f0;
+}
+
+.addProduct_button:hover {
+    background-color: rgba(0,113,240,0.7);
+}
+
+.image_button {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    margin: -1px 0 0 -6px;
+}
+
+.image_button:hover {
+    opacity: 0.7;
+}
+
+
+
+/*Стиль полей для ввода*/
+.field_group {
+    position: relative;
+    margin: 32px;
+}
+
+.field_lable {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    color: #9e9e9e;
+    transition: 0.3s;
+}
+
+.field_input {
+    width: 100%;
+    padding: 0 0 10px 0;
+    border: none;
+    border-bottom: 1px solid #808080;
+    background-color: transparent;
+    outline: none;
+    transition: 0.3s;
+    color: white;
+    font-size: 20px;
+}
+
+.field_input:focus {
+    border-bottom: 1px solid white
+}
+
+.field_input:focus ~ .field_lable,
+.field_input:not(:placeholder-shown) ~ .field_lable {
+     top: -18px;
+     font-size: 12px;
+     color: #e0e0e0;
+}
+
+.category_select{
+    width: 260px;
+    height:40px;
+    border-radius: 1em;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+table, th, td {
+    border: 3px solid white;
+    border-collapse: collapse;
+    margin: 10px;
+    text-align: center;
+    font-size: 25px;
+    color: #bbbbbb;
+}

@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Chetvyorochka</title>
+    <link rel="stylesheet" href="~/css/login.css">
+</head>
+<body>
+    <div class="form">
+        <h1 class="form_title">Chetvyorochka</h1>
+        <div class="enterForm_group">
+            <button id="loginTabBtn"
+                    class="typeEnterForm_button"
+                    onclick="openTab('loginTab',this,'#0c3cc9')">
+                Вход
+            </button>
+            <button class="typeEnterForm_button"
+                    onclick="openTab('registerTab',this,'#0c3cc9')">
+                Регистрация
+            </button>
+        </div>
+        <div id="loginTab"
+             class="tab"
+             style="display:block">
+            <div class="field_group">
+                <input type="text"
+                       id="usernameLogin"
+                       class="field_input" 
+                       placeholder=" ">
+                <lable class="field_lable">Логин</lable>
+            </div>
+            <div class="field_group">
+                <input type="password"
+                       id="passwordLogin"
+                       class="field_input"
+                       placeholder=" ">
+                <lable class="field_lable">Пароль</lable>
+            </div>
+            <button id="loginBtn"
+                    class="typeQuery_button"
+                    onclick="login()">
+                Войти
+            </button>
+        </div>
+        <div id="registerTab"
+             class="tab"
+             style="display:none">
+            <div class="field_group">
+                <input type="text"
+                       id="usernameRegister"
+                       class="field_input"
+                       placeholder=" ">
+                <lable class="field_lable">*Логин</lable>
+            </div>
+            <div class="field_group">
+                <input type="text"
+                       id="firstNameRegister"
+                       class="field_input"
+                       placeholder=" ">
+                <lable class="field_lable">*Имя</lable>
+            </div>
+            <div class="field_group">
+                <input type="text"
+                       id="lastNameRegister"
+                       class="field_input"
+                       placeholder=" ">
+                <lable class="field_lable">Фамилия</lable>
+            </div>
+            <div class="field_group">
+                <input type="password"
+                       id="passwordRegister"
+                       class="field_input"
+                       placeholder=" ">
+                <lable class="field_lable">*Пароль</lable>
+            </div>
+            <h2 class="prompt">*Поля обязательные к заполнению</h2>
+            <button id="registerBtn"
+                    class="typeQuery_button"
+                    onclick="register()">
+                Зарегистрироваться
+            </button>
+        </div>
+        <h2 id="message"
+             class="errorMessage"/>
+    </div>
+</body>
+</html>
+<script>
+
+    document.getElementById('loginTabBtn').style.backgroundColor = "#0c3cc9";
+
+    var errorMessage = document.getElementById('message');
+    var usernameLogin = document.getElementById("usernameLogin");
+    var passwordLogin = document.getElementById("passwordLogin");
+
+    var usernameRegister = document.getElementById("usernameRegister");
+    var firstNameRegister = document.getElementById("firstNameRegister");
+    var lastNameRegister = document.getElementById("lastNameRegister");
+    var passwordRegister = document.getElementById("passwordRegister");
+
+    //////
+
+    /////Запрос на аутентификацию пользователя
+    async function login() {
+        errorMessage.innerText = '';
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify({
+                Login: usernameLogin.value,
+                Password: passwordLogin.value
+            })
+        });
+        const message = await response.json();
+        if (response.status == 200) {
+            window.location.href = "/Home/Index";
+        } 
+        if (response.status == 400){
+            passwordLogin.value = '';
+            showErrorMessage(message.errorText);
+        }
+        else {
+            usernameLogin.value = '';
+            passwordLogin.value = '';
+            showErrorMessage(message.errorText);
+        }
+    }
+
+    /////Запрос на регистрацию пользователя
+    async function register() {
+        errorMessage.innerText = '';
+        const response = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify({
+                Login: usernameRegister.value,
+                FistName: firstNameRegister.value,
+                LastName: lastNameRegister.value,
+                Password: passwordRegister.value
+            })
+        });
+        const message = await response.json();
+        if (response.status == 200) {
+            window.location.href = "/Home/Index";
+        } else {
+            usernameRegister.value = '';
+            showErrorMessage(message.errorText);
+        }
+    }
+
+    /////Управление элементами интерфейса
+    function openTab(idDiv, element, color) {
+        //Скрываем всё содержимое
+        var i, tabContent, tablinks;
+        tabContent = document.getElementsByClassName("tab");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+
+        // Remove the background color of all tablinks/buttons
+        tablinks = document.getElementsByClassName("typeEnterForm_button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+
+        document.getElementById(idDiv).style.display = "block";
+        element.style.backgroundColor = color;
+
+        errorMessage.innerText = '';
+    }
+
+    function showErrorMessage(text){
+        errorMessage.style.display = 'block';
+        errorMessage.innerText = text;
+        setTimeout(function () {
+            errorMessage.style.display='none';
+        }, 5000);
+    }
+</script>

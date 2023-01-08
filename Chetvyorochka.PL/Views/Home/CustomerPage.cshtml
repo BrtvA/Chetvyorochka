@@ -1,0 +1,286 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="~/css/customerPage.css">
+</head>
+<body>
+    <div class="form">
+        <div class="typeContent_group">
+            <button class="typeContent_button"
+                    onclick="openTab('catalogContent',this,'#0c3cc9')"
+                    style="background:#0c3cc9">
+                Каталог
+            </button>
+            <button class="typeContent_button"
+                    onclick="openTab('basketContent',this,'#0c3cc9')">
+                Корзина
+            </button>
+        </div>
+        <div id="catalogContent"
+             class="tableContent_group">
+        </div>
+        <div id="basketContent"
+             class="tableContent_group" 
+             style="display:none">
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+    var cashDiv = document.getElementById("cashDiv");
+    var topUpDiv = document.getElementById("topUpDiv");
+    var userInfoDiv = document.getElementById("userInfoDiv");
+    var backDiv = document.getElementById("backDiv");
+    var userInfo = document.getElementById("userInfo");
+
+    var catalogContent = document.getElementById("catalogContent");
+    var basketContent = document.getElementById("basketContent");
+
+    var htmlContent='';
+
+
+    ////////////////////////////////////////////////
+    topUpDiv.style.display = 'flex';
+    userInfoDiv.style.display = 'flex';
+
+    (async () => {
+        await getUserInfo();
+        await startDrawProductList();
+    })();
+    
+    ///////////////////////////////////////////////
+
+
+    /////Запрос информации о пользователе
+    async function getUserInfo() {
+        const response = await fetch("/User/GetInfo");
+        const message = await response.json();
+        if (response.status == 404) {
+            openDialog(message.errorText);
+        }
+        if (response.status == 200) {
+
+            userInfo.innerHTML = message.name + " " + message.lastName +"<br>" + 
+                                 "Счёт: " + message.moneyCount + " рублей";
+        }
+    }
+
+    /////Запрос информации о списке продуктов
+    var productTypeId = 0;
+    var startDraw = false;
+    async function startDrawProductList() {
+        const responseProductType = await fetch("/ProductType/GetAll");
+        const messageProductType = await responseProductType.json();
+        if (responseProductType.status == 200) {
+            messageProductType.forEach(item => productTypeArray[item.id] = item.name);
+
+            const responseProduct = await fetch("/Product/GetAll");
+            const message = await responseProduct.json();
+            if (responseProduct.status == 200) {
+                catalogContent.innerHTML = '';
+                htmlContent='';
+                startDraw = true;
+                message.forEach(drawProductList);
+                catalogContent.innerHTML += htmlContent + '</div>';
+                productTypeId = 0;
+                startDraw = false;
+            }
+        }
+    }
+
+    function drawProductList(item) {
+
+        if (productTypeId != item.productTypeId) {
+            if (startDraw) {
+                startDraw = false;
+            }
+            else {
+                htmlContent += '</div>';
+            }
+
+            htmlContent +=
+                '<div class="category">' +
+                    '<h2 class="categoryInfo">' + productTypeArray[item.productTypeId] + '</h2>' +
+                '</div>';
+
+            htmlContent += '<div class="category">'
+        }
+
+        productTypeId = item.productTypeId;
+
+        htmlContent +=
+            '<div class="content">' +
+                '<h2 class="mainInfo">' + item.name + '</h2>' +
+                '<h2 class="additionalInfo">' + item.description + '</h2>' +
+                '<h2 class="additionalInfo">В наличии: ' + item.count + ' шт</h2>' +
+                '<h2 class="mainInfo">' + item.price + ' рублей</h2>' +
+                '<button class="basket_button" onclick="addToBasket(' + item.id + ')">' +
+                    '<img class="image_button" src="/images/icon-basket.png">' +
+                '</button>' +
+            '</div>';
+    }
+
+    /////Запрос информации о товарах в корзине
+    async function startDrawBasket() {
+        const response = await fetch("/Basket/GetAll");
+        const message = await response.json();
+        if (response.status == 200) {
+            basketContent.innerHTML = '';
+            htmlContent='';
+            if (message.length == 0) {
+                htmlContent = '<h2 class="mainInfo">В корзине пусто! Выберете товар из каталога.</h2>'
+            }
+            else{
+                message.forEach(drawBasket);
+                htmlContent = '<div class="category">' + htmlContent + '</div>';
+                drawTotalPrice(message);
+            }
+            basketContent.innerHTML = htmlContent;
+        }
+    }
+
+    function drawBasket(item) {
+        htmlContent += 
+            '<div class="content">' +
+                '<h2 class="mainInfo">' + item.name + '</h2>' +
+                '<h2 class="mainInfo">' + item.price + ' рублей</h2>' +
+                '<div class="productCount_group">' +
+                    '<button class="changeCount_button" onclick="removeFromBasket(' + item.id + ')">-</button>' +
+                    '<h2 class="mainInfo">' + item.count + ' шт</h2>' +
+                    '<button class="changeCount_button" onclick="addToBasket(' + item.id + ')"/>+</button>' +
+                '</div>' +
+            '</div>';
+    }
+
+    function drawTotalPrice(message) {
+        var totalPrice = 0;
+        message.forEach((item) => {
+            totalPrice += item.price * item.count
+        })
+
+        if (totalPrice > 0) {
+            htmlContent +=
+                '<div class="category">' +
+                    '<h2 class="mainInfo"> Итого: ' + totalPrice + ' рублей</h2>' +
+                    '<button class="changeCount_button" onclick="buyProducts()">Купить</button>' +
+                '</div>'
+        }
+    }
+
+    /////Запрос информации о категориях продуктов
+    var productTypeArray = {};
+    async function getProductTypes(){
+        const response = await fetch("/ProductType/GetAll");
+        const message = await responseProductType.json();
+        if (response.status == 200){
+            message.forEach(item => productTypeArray[item.id] = item.name);
+        }
+        var statusCode = response.status;
+        return statusCode;
+    }
+
+    /////Запрос на пополнение счёта пользователя
+    async function addCash() {
+        var money = document.getElementById("cashCount").value;
+
+        const response = await fetch("/User/AddMoney", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(money)
+        });
+
+        const message = await response.json();
+        if (response.status == 400 || response.status == 404) {
+            openDialog(message.errorText);
+        }
+        if (response.status == 200) {
+            getUserInfo();
+            openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv);
+        }
+    }
+
+    /////Запрос на добавление товара в корзину
+    async function addToBasket(id) {
+        const response = await fetch("/Basket/IncreaseCount", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(id)
+        });
+        const message = await response.json();
+        if (response.status == 404) {
+            openDialog(message.errorText);
+        }
+        if (basketContent.style.display == "flex"){
+            startDrawBasket();
+        }
+    }
+
+    /////Запрос на удаление товара из корзины
+    async function removeFromBasket(id) {
+        const response = await fetch("/Basket/ReduceCount", {
+            method: "POST",
+            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            body: JSON.stringify(id)
+        });
+        const message = await response.json();
+        if (response.status == 404) {
+            openDialog(message.errorText);
+        }
+        startDrawBasket();
+    }
+
+    /////Запрос на покупку товаров в корзине
+    async function buyProducts() {
+        const response = await fetch("/Basket/Buy");
+        const message = await response.json();
+        if (response.status == 400) {
+            openDialog(message.errorText);
+        }
+        if (response.status == 200) {
+            getUserInfo();
+            startDrawBasket();
+            openDialog("Покупка осуществлена");
+        }
+    }
+
+    ////Управление элементами интерфейса
+    function openCashTab(openDiv, closeDiv, openButton, closeButton){
+        openDiv.style.display = "block";
+        closeDiv.style.display = "none";
+        openButton.style.display = "block";
+        closeButton.style.display = "none";
+    }
+
+    async function openTab(idDiv, element, color) {
+        //Скрываем всё содержимое
+        var i, tabContent, tablinks;
+        tabContent = document.getElementsByClassName("tableContent_group");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+
+        // Remove the background color of all tablinks/buttons
+        tablinks = document.getElementsByClassName("typeContent_button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+
+        document.getElementById(idDiv).style.display = "flex";
+        element.style.backgroundColor = color;
+
+        if (idDiv == 'catalogContent') {
+            getUserInfo();
+            startDrawProductList();
+        }
+        else{
+            getUserInfo();
+            startDrawBasket();
+        }
+    }
+</script>

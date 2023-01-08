@@ -1,0 +1,145 @@
+﻿body {
+    background: linear-gradient(180deg, #4712d0, #4e1b64);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    overflow:hidden;
+}
+
+.topic_group {
+    display: flex;
+    background: #4712d0;
+    flex-direction: row;
+    width: 900px;
+    height: 100px;
+    justify-content: space-around;
+    align-content: center;
+    align-items:center;
+    border: none;
+    border-bottom: solid;
+    border-radius: 20px;
+    border-color: #f1e1e1;
+    box-shadow: 0px 15px 10px #ccc;
+}
+
+.titleTopic {
+    font-size: 50px;
+    font-weight: normal;
+    color: white;
+    text-shadow: 5px 5px 5px #110531;
+}
+
+.infoTopic {
+    font-size: 25px;
+    font-weight: normal;
+    color: #cccccc;
+}
+
+.logoutTopic_button {
+    align-items:center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.image_button {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    margin: -1px 0 0 -6px;
+}
+
+.image_button:hover {
+   opacity: 0.7;
+}
+
+
+
+
+.cashTopic_input {
+    height: 32px;
+    width: 200px;
+    font-size: 24px;
+    font-weight: lighter;
+    text-align: center;
+    border: ridge;
+    border-color: #2e00a4;
+    border-radius: 10px;
+}
+
+.topUpTopic_button {
+    height: 32px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: lighter;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #0071f0;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 1px 10px #110531;
+}
+
+.topUpTopic_button:hover {
+    background-color: rgba(0,113,240,0.7);
+}
+
+.topUpTopic_button:active {
+   top: 1em;
+   left: 50em;
+   box-shadow: 0 0 0 60px rgba(0,0,0,.05) inset;
+}
+
+
+
+/*Немодальное окно вывода сообщений*/
+.errorDialog {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    position: fixed;
+    top: 40%;
+    left: 40%;
+    min-width: 200px;
+    max-width: 500px;
+    min-height: 50px;
+    max-height: 200px;
+    border: 5px solid black;
+    border-radius: 15px;
+    background: white;
+    z-index: 999;
+}
+
+.error_lable {
+    font-family: sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    margin: 20px;
+    overflow: auto;
+}
+
+.error_button {
+    width: 100px;
+    height: 60px;
+    margin: 10px;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: #0071f0;
+}
+
+.error_button:hover {
+    background-color: rgba(0,113,240,0.7);
+}

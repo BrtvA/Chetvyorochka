@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Chetvyorochka</title>
+    <link rel="stylesheet" href="~/css/layout.css">
+</head>
+<body>
+    <header>
+        <div class="topic_group">
+            <div>
+                <h2 class="titleTopic">Chetvyorochka</h2>
+            </div>
+            <div id="userInfoDiv">
+                <h2 id="userInfo"
+                    class="infoTopic">
+                </h2>
+            </div>
+            <div id="cashDiv"
+                 style="display:none">
+                <input id="cashCount"
+                       type="number"
+                       class="cashTopic_input">
+                <button class="topUpTopic_button"
+                        onclick="addCash()">
+                    Пополнить
+                </button>
+            </div>
+            <div id="topUpDiv"
+                style="display:none">
+                <button class="logoutTopic_button"
+                        onclick="openCashTab(cashDiv, userInfoDiv, backDiv, topUpDiv)">
+                    <img class="image_button"
+                         src="/images/icon-money.png">
+                </button>
+            </div>
+            <div id="backDiv"
+                 style="display:none">
+                <button class="logoutTopic_button"
+                        onclick="openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv)">
+                    <img class="image_button"
+                         src="/images/icon-back.png">
+                </button>
+            </div>
+            <div>
+                <button class="logoutTopic_button"
+                        onclick="logout()">
+                    <img class="image_button"
+                         src="/images/icon-exit.png">
+                </button>
+            </div>
+        </div>
+
+        <div id="errorDlg"
+             class="errorDialog">
+            <lable id="errorLbl"
+                   class="error_lable">
+            </lable>
+            <button class="error_button"
+                    onclick="closeDialog()">
+                Ok
+            </button>
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>
+<script>
+    var errorMessage = document.getElementById("errorLbl");
+    var errorDialog = document.getElementById("errorDlg");
+
+    function logout() {
+        window.location.href = "/Home/Logout";
+    }
+
+    function openDialog(errorText){
+        errorDialog.style.display = "flex";
+        errorMessage.innerText = errorText;
+    }
+
+    function closeDialog(){
+        errorDialog.style.display = "none";
+    }
+</script>
+

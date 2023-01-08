@@ -1,0 +1,131 @@
+﻿.form {
+    display: flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items: center;
+    margin-top: 30px;
+    width: 1280px;
+    height:800px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    background: #4712d0;
+}
+
+.typeContent_group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.typeContent_button {
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    font-size: 25px;
+    width: 500px;
+    margin-inline: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #0071f0;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 1px 10px #110531;
+}
+
+.typeContent_button:hover {
+    background-color: rgba(0,113,240,0.7);
+}
+
+
+.tableContent_group {
+    display: flex;
+    flex-direction:column;
+    overflow: auto;
+}
+
+.category {
+    display: inherit;
+    width: inherit;
+    border: solid;
+    border-color: white;
+    border-radius:10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+
+.content {
+    display: inherit;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 5px;
+    border: solid;
+    border-radius: 15px;
+    border-width: 5px;
+    border-color: #381d80;
+    background-color: #1982f77a;
+}
+
+.categoryInfo{
+    font-size: 40px;
+    font-weight: 700;
+    color: #ccc;
+}
+
+.mainInfo {
+    font-size: 25px;
+    font-weight:700;
+    color: #ccc;
+}
+
+.additionalInfo {
+    font-size: 22px;
+    font-weight: 500;
+    color: #808080;
+}
+
+.basket_button {
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: 700;
+    color: #ccc;
+}
+
+.productCount_group {
+    display: inherit;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.changeCount_button {
+    width: 100px;
+    height: 50px;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    font-size: 25px;
+    color:white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: #0071f0;
+}
+
+.changeCount_button:hover {
+    background-color: rgba(0,113,240,0.7);
+}
