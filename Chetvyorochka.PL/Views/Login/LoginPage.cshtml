@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Chetvyorochka</title>
     <link rel="stylesheet" href="~/css/login.css">
+    <script src="~/js/validation.js" asp-append-version="true"></script>
 </head>
 <body>
     <div class="form">
@@ -28,6 +29,9 @@
                        class="field_input" 
                        placeholder=" ">
                 <lable class="field_lable">Логин</lable>
+                <lable id="usernameLoginPopup"
+                       class="popup_span">
+                </lable>
             </div>
             <div class="field_group">
                 <input type="password"
@@ -35,6 +39,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Пароль</lable>
+                <lable id="passwordLoginPopup"
+                       class="popup_span">
+                </lable>
             </div>
             <button id="loginBtn"
                     class="typeQuery_button"
@@ -49,22 +56,47 @@
                 <input type="text"
                        id="usernameRegister"
                        class="field_input"
-                       placeholder=" ">
+                       placeholder=" "
+                       autocomplete="off">
                 <lable class="field_lable">*Логин</lable>
+                <lable id="usernamePopup"
+                       class="popup_span">
+                </lable>
+                <ul class="input-requirements">
+                    <li>Используйте только латиницу и цифры</li>
+                    <li>Не содержит пробелы и спец. символы</li>
+                    <li>Минимальная длина логина - 5 символа, максимальная - 20 символов</li>
+                </ul>
             </div>
             <div class="field_group">
                 <input type="text"
                        id="firstNameRegister"
                        class="field_input"
-                       placeholder=" ">
+                       placeholder=" "
+                       autocomplete="off">
                 <lable class="field_lable">*Имя</lable>
+                <lable id="firstNamePopup"
+                       class="popup_span">
+                </lable>
+                <ul class="input-requirements">
+                    <li>Используйте только кириллицу</li>
+                    <li>Максимальная длина - 20 символов</li>
+                </ul>
             </div>
             <div class="field_group">
                 <input type="text"
                        id="lastNameRegister"
                        class="field_input"
-                       placeholder=" ">
+                       placeholder=" "
+                       autocomplete="off">
                 <lable class="field_lable">Фамилия</lable>
+                <lable id="lastNamePopup"
+                       class="popup_span">
+                </lable>
+                <ul class="input-requirements">
+                    <li>Используйте только кириллицу</li>
+                    <li>Максимальная длина - 20 символов</li>
+                </ul>
             </div>
             <div class="field_group">
                 <input type="password"
@@ -72,6 +104,14 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">*Пароль</lable>
+                <lable id="passwordPopup"
+                       class="popup_span">
+                </lable>
+                <ul class="input-requirements">
+                    <li>Используйте только латиницу и цифры</li>
+                    <li>Не используйте пробелы и спец. символы</li>
+                    <li>Минимальная длина пароля - 4 символа</li>
+                </ul>
             </div>
             <h2 class="prompt">*Поля обязательные к заполнению</h2>
             <button id="registerBtn"
@@ -90,6 +130,7 @@
     document.getElementById('loginTabBtn').style.backgroundColor = "#0c3cc9";
 
     var errorMessage = document.getElementById('message');
+
     var usernameLogin = document.getElementById("usernameLogin");
     var passwordLogin = document.getElementById("passwordLogin");
 
@@ -98,53 +139,64 @@
     var lastNameRegister = document.getElementById("lastNameRegister");
     var passwordRegister = document.getElementById("passwordRegister");
 
+    var usernamePopup = document.getElementById("usernamePopup");
+    var firstNamePopup = document.getElementById("firstNamePopup");
+    var lastNamePopup = document.getElementById("lastNamePopup");
+    var passwordPopup = document.getElementById("passwordPopup");
+    var usernameLoginPopup = document.getElementById("usernameLoginPopup");
+    var passwordLoginPopup = document.getElementById("passwordLoginPopup");
+
     //////
 
     /////Запрос на аутентификацию пользователя
     async function login() {
-        errorMessage.innerText = '';
-        const response = await fetch("/api/login", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Login: usernameLogin.value,
-                Password: passwordLogin.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 200) {
-            window.location.href = "/Home/Index";
-        } 
-        if (response.status == 400){
-            passwordLogin.value = '';
-            showErrorMessage(message.errorText);
-        }
-        else {
-            usernameLogin.value = '';
-            passwordLogin.value = '';
-            showErrorMessage(message.errorText);
+        if (loginValidate()==true){
+            errorMessage.innerText = '';
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Login: usernameLogin.value,
+                    Password: passwordLogin.value
+                })
+            });
+            const message = await response.json();
+            if (response.status == 200) {
+                window.location.href = "/Home/Index";
+            }
+            if (response.status == 400) {
+                passwordLogin.value = '';
+                showErrorMessage(message.errorText);
+            }
+            else {
+                usernameLogin.value = '';
+                passwordLogin.value = '';
+                showErrorMessage(message.errorText);
+            }
         }
     }
 
     /////Запрос на регистрацию пользователя
     async function register() {
-        errorMessage.innerText = '';
-        const response = await fetch("/api/register", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Login: usernameRegister.value,
-                FistName: firstNameRegister.value,
-                LastName: lastNameRegister.value,
-                Password: passwordRegister.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 200) {
-            window.location.href = "/Home/Index";
-        } else {
-            usernameRegister.value = '';
-            showErrorMessage(message.errorText);
+        if (registerValidate()==true){
+            errorMessage.innerText = '';
+            const response = await fetch("/api/register", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Login: usernameRegister.value,
+                    FistName: firstNameRegister.value,
+                    LastName: lastNameRegister.value,
+                    Password: passwordRegister.value
+                })
+            });
+            const message = await response.json();
+            if (response.status == 200) {
+                window.location.href = "/Home/Index";
+            } else {
+                usernameRegister.value = '';
+                showErrorMessage(message.errorText);
+            }
         }
     }
 
@@ -175,5 +227,118 @@
         setTimeout(function () {
             errorMessage.style.display='none';
         }, 5000);
+    }
+
+    /////Валидация данных
+    function checkFieldWithNull(minLength, maxLength, value, regex, popup, popupRegexText) {
+        if (checkLength(minLength, maxLength, value.length) == true) {
+            if (validate(regex, value) == true) {
+                popup.innerText = "";
+                popup.style.display = "none";
+                return true;
+            } else {
+                popup.innerText = "Используйте только латинские символы и цифры";
+                popup.style.display = "block";
+                return false;
+            }
+        }else{
+            if (value.length == 0){
+                popup.innerText = "";
+                popup.style.display = "none";
+                return true;
+            }else{
+                popup.innerText = `Минимальное количество символов должно быть ${minLength}, максимальное - ${maxLength}`;
+                popup.style.display = "block";
+                return false;
+            }
+        }
+    }
+
+    function loginValidate(){
+        var statusField1 = checkField(5, 20, usernameLogin.value, regLatinNumber, usernameLoginPopup, popupLatinNumberText);
+        var statusField2 = checkField(4, 20, passwordLogin.value, regLatinNumber, passwordLoginPopup, popupLatinNumberText);
+        if (statusField1 == true && statusField2 == true) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function registerValidate(){
+        var statusField1 = checkField(5, 20, usernameRegister.value, regLatinNumber, usernamePopup, popupLatinNumberText);
+        var statusField2 = checkField(1, 20, firstNameRegister.value, regCyrillic, firstNamePopup, popupCyrillicText);
+        var statusField3 = checkFieldWithNull(1, 20, lastNameRegister.value, regCyrillic, lastNamePopup, popupCyrillicText);
+        var statusField4 = checkField(4, 20, passwordRegister.value, regLatinNumber, passwordPopup, popupLatinNumberText);
+
+        if (statusField1 == true && statusField2 == true &&
+            statusField2 == true && statusField3 == true) 
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+        //var boolStatus;
+
+        //if (validate(regLatinNumber, usernameRegister.value) == false 
+        //    && (usernameRegister.value.length < 5 || usernameRegister.value.length > 20))
+        //{
+        //    usernamePopup.innerText = "Заполните поле в соответствии с требованиями";
+        //    usernamePopup.style.display = "block";
+        //    boolStatus = 0;
+        //}
+        //else{
+        //    usernamePopup.innerText = "";
+        //    usernamePopup.style.display = "none";
+        //    boolStatus = 1;
+        //}
+
+        //if (validate(regCyrillic, firstNameRegister.value) == false
+        //    && (firstNameRegister.value.length < 1 || firstNameRegister.value.length > 20))
+        //{
+        //    firstNamePopup.innerText = "Заполните поле в соответствии с требованиями";
+        //    firstNamePopup.style.display = "block";
+        //    boolStatus *= 0;
+        //}
+        //else{
+        //    firstNamePopup.innerText = "";
+        //    firstNamePopup.style.display = "none";
+        //    boolStatus *= 1;
+        //}
+
+        //if (validate(regCyrillic, lastNameRegister.value) == false 
+        //    && (lastNameRegister.value.length != 0  || firstNameRegister.value.length > 20))
+        //{
+        //    lastNamePopup.innerText = "Заполните поле в соответствии с требованиями";
+        //    lastNamePopup.style.display = "block";
+        //    boolStatus *= 0;
+        //}
+        //else{
+        //    lastNamePopup.innerText = "";
+        //    lastNamePopup.style.display = "none";
+        //    boolStatus *= 1;
+        //}
+
+        //if (validate(regLatinNumber, passwordRegister.value) == false
+        //    && (usernameRegister.value.length < 4 || usernameRegister.value.length > 20)) 
+        //{
+        //    passwordPopup.innerText = "Заполните поле в соответствии с требованиями";
+        //    passwordPopup.style.display = "block";
+        //    boolStatus *= 0;
+        //}
+        //else {
+        //    passwordPopup.innerText = "";
+        //    passwordPopup.style.display = "none";
+        //    boolStatus *= 1;
+        //}
+
+        //if (boolStatus == 0){
+        //    return false;
+        //}
+        //else{
+        //    return true;
+        //}
     }
 </script>
