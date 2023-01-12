@@ -15,7 +15,7 @@
              style="display:none; flex-direction: row;">
             <button class="action_button"
                     onclick="openTab('addProductDiv', 0)">
-                <img class="image_button" src="/images/icon-back2.png">
+                <img class="image_button" src="/images/icon-back2.png"/>
             </button>
             <div class="field_group">
                 <input type="text"
@@ -27,13 +27,13 @@
             <button id="addTypeBtn"
                     class="action_button"
                     onclick="addProductType()">
-                <img class="image_button" src="/images/icon-add2.png">
+                <img class="image_button" src="/images/icon-add2.png"/>
             </button>
             <button id="editTypeBtn"
                     class="action_button"
                     onclick="editProductType()"
                     style="display:none">
-                <img class="image_button" src="/images/icon-edit.png">
+                <img class="image_button" src="/images/icon-edit.png"/>
             </button>
         </div>
 
@@ -43,18 +43,18 @@
             <div class="addProductType_group">
                 <button class="action_button"
                         onclick="deleteProductType()">
-                    <img class="image_button" src="/images/icon-delete.png">
+                    <img class="image_button" src="/images/icon-delete.png"/>
                 </button>
                 <select id="productTypeList"
                         class="category_select">
                 </select>
                 <button class="action_button"
                         onclick="openTab('addProductTypeDiv', 0)">
-                    <img class="image_button" src="/images/icon-add.png">
+                    <img class="image_button" src="/images/icon-add.png"/>
                 </button>
                 <button class="action_button"
                         onclick="openTab('addProductTypeDiv', 1)">
-                    <img class="image_button" src="/images/icon-edit.png">
+                    <img class="image_button" src="/images/icon-edit.png"/>
                 </button>
             </div>
             <div class="field_group">
@@ -270,11 +270,11 @@
                 '<td width="15%">' + item.price + '</td>' +
                 '<td width="15%">' + item.count + '</td>' +
                 '<td width="10%">' +
-                    '<button class="action_button" onclick="switchToEdit(' + item.id + ')">'+
-                        '<img class="image_button" src="/images/icon-edit.png">' +
+                    '<button class="action_button" onclick="switchToEdit(' + item.id + ')">' +
+                        '<img class="image_button" src="/images/icon-edit.png"/>' +
                     '</button>' +
                     '<button class="action_button" onclick="switchToDelete(' + item.id + ')">' +
-                        '<img class="image_button" src="/images/icon-delete.png">' +
+                        '<img class="image_button" src="/images/icon-delete.png"/>' +
                     '</button>' +
             '</tr>';
     }
