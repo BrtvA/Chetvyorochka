@@ -6,6 +6,7 @@
 <html lang="ru">
 <head>
     <link rel="stylesheet" href="~/css/adminPage.css">
+    <script src="~/js/validation.js" asp-append-version="true"></script>
 </head>
 <body>
     <div class="form">
@@ -23,6 +24,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Новая категория</lable>
+                <lable id="nameProductTypePopup"
+                       class="popup_lable">
+                </lable>
             </div>
             <button id="addTypeBtn"
                     class="action_button"
@@ -63,6 +67,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Наименование продукта</lable>
+                <lable id="nameProductPopup"
+                       class="popup_lable">
+                </lable>
             </div>
             <div class="field_group">
                 <input type="text"
@@ -70,6 +77,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Описание</lable>
+                <lable id="descriptionProductPopup"
+                       class="popup_lable">
+                </lable>
             </div>
             <div class="field_group">
                 <input type="number"
@@ -77,6 +87,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Цена</lable>
+                <lable id="priceProductPopup"
+                       class="popup_lable">
+                </lable>
             </div>
             <div class="field_group">
                 <input type="number"
@@ -84,6 +97,9 @@
                        class="field_input"
                        placeholder=" ">
                 <lable class="field_lable">Количество</lable>
+                <lable id="countProductPopup"
+                       class="popup_lable">
+                </lable>
             </div>
             <button id="addBtn"
                     class="addProduct_button"
@@ -117,15 +133,11 @@
 </body>
 </html>
 
-
 <script>
     var itemId;
     var workMode;//0-добавление категории, 1-редактирование категории
 
     var userInfo = document.getElementById("userInfo");
-
-    //var errorMessage = document.getElementById("errorLbl");
-    //var errorDialog = document.getElementById("errorDlg");
 
     var addButton = document.getElementById("addBtn");
     var editButton = document.getElementById("editBtn");
@@ -142,6 +154,12 @@
     var priceProductInput = document.getElementById("priceProduct");
     var countProductInput = document.getElementById("countProduct");
 
+    var nameProductTypePopup = document.getElementById("nameProductTypePopup");
+    var nameProductPopup = document.getElementById("nameProductPopup");
+    var descriptionProductPopup = document.getElementById("descriptionProductPopup");
+    var priceProductPopup = document.getElementById("priceProductPopup");
+    var countProductPopup = document.getElementById("countProductPopup");
+
     ////////////////////////////
 
 
@@ -156,43 +174,51 @@
 
     /////Запрос на добавление категории продуктов
     async function addProductType() {
-        const response = await fetch("/ProductType/Add", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Name: nameProductTypeInput.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 401 || response.status == 400) {
-            openDialog(message.errorText);
-        }
-        if (response.status == 200) {
-            cleanInputField();
-            startDrawProductType();
-            openDialog("Категория добавлена");
+        var nameProductType = nameProductTypeInput.value.trim();
+
+        if (productTypeValidate(nameProductType) == true) {
+            const response = await fetch("/ProductType/Add", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Name: nameProductType
+                })
+            });
+            const message = await response.json();
+            if (response.status == 401 || response.status == 400) {
+                openDialog(message.errorText);
+            }
+            if (response.status == 200) {
+                cleanInputField();
+                startDrawProductType();
+                openDialog("Категория добавлена");
+            }
         }
     }
 
     /////Запрос на редактирование категории продуктов
     async function editProductType(){
-        const response = await fetch("/ProductType/Edit", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Id: itemId,
-                Name: nameProductTypeInput.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
-        if (response.status == 200) {
-            cleanInputField();
-            openTab('addProductDiv', 0);
-            startDrawProductType();
-            openDialog("Категория изменена");
+        var nameProductType = nameProductTypeInput.value.trim();
+
+        if (productTypeValidate(nameProductType) == true) {
+            const response = await fetch("/ProductType/Edit", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Id: itemId,
+                    Name: nameProductType
+                })
+            });
+            const message = await response.json();
+            if (response.status == 404) {
+                openDialog(message.errorText);
+            }
+            if (response.status == 200) {
+                cleanInputField();
+                openTab('addProductDiv', 0);
+                startDrawProductType();
+                openDialog("Категория изменена");
+            }
         }
     }
 
@@ -315,56 +341,70 @@
 
     /////Запрос на добавление нового продукта
     async function addProductInfo() {
-        const response = await fetch("/Product/Add", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Name: nameProductInput.value,
-                Description: descriptionProductInput.value,
-                ProductTypeId: productTypeListSelect.value,
-                Price: priceProductInput.value,
-                Count: countProductInput.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 401 || response.status == 400) {
-            openDialog(message.errorText);
-        }
-        if (response.status == 200) {
-            cleanInputField();
-            startDrawTableProduct();
-            openDialog("Продукт добавлен");
+        var nameProduct = nameProductInput.value.trim();
+        var descriptionProduct = descriptionProductInput.value.trim();
+        var priceProduct = priceProductInput.value/1;
+        var countProduct = countProductInput.value/1;
+
+        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) == true){
+            const response = await fetch("/Product/Add", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Name: nameProduct,
+                    Description: descriptionProduct,
+                    ProductTypeId: productTypeListSelect.value,
+                    Price: priceProduct,
+                    Count: countProduct
+                })
+            });
+            const message = await response.json();
+            if (response.status == 401 || response.status == 400) {
+                openDialog(message.errorText);
+            }
+            if (response.status == 200) {
+                cleanInputField();
+                startDrawTableProduct();
+                openDialog("Продукт добавлен");
+            }
         }
     }
 
     /////Запрос на редактирование информации о продукте
     async function editProductInfo() {
-        const response = await fetch("/Product/Edit", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify({
-                Id: itemId,
-                Name: nameProductInput.value,
-                Description: descriptionProductInput.value,
-                ProductTypeId: productTypeListSelect.value,
-                Price: priceProductInput.value,
-                Count: countProductInput.value
-            })
-        });
-        const message = await response.json();
-        if (response.status == 401 || response.status == 404) {
-            openDialog(message.errorText);
-        }
-        if (response.status == 200) {
+        var nameProduct = nameProductInput.value.trim();
+        var descriptionProduct = descriptionProductInput.value.trim();
+        var priceProduct = priceProductInput.value/1;
+        var countProduct = countProductInput.value/1;
 
-            addButton.style.display = "block";
-            editButton.style.display = "none";
+        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) == true){
+            const response = await fetch("/Product/Edit", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Id: itemId,
+                    Name: nameProduct,
+                    Description: descriptionProduct,
+                    ProductTypeId: productTypeListSelect.value,
+                    Price: priceProduct,
+                    Count: countProduct
+                })
+            });
+            const message = await response.json();
+            if (response.status == 401 || response.status == 404) {
+                openDialog(message.errorText);
+            }
+            if (response.status == 200) {
 
-            cleanInputField();
+                addButton.style.display = "block";
+                editButton.style.display = "none";
 
-            startDrawTableProduct();
+                cleanInputField();
 
-            openDialog("Информация обновлена");
+                startDrawTableProduct();
+
+                openDialog("Информация обновлена");
+            }
         }
     }
 
@@ -408,5 +448,58 @@
         descriptionProductInput.value = "";
         priceProductInput.value = "";
         countProductInput.value = "";
+    }
+
+    /////Валидация
+    let regCyrillicNumberSpace = /^[А-Яа-яЁё0-9 ]+$/;
+    let regCyrillicSpace = /^[А-Яа-яЁё]+$/;
+    let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё" ]+$/;
+
+    const popupCyrillicLatinQuoteSpaceText = "Используйте только кириллицу, латиницу, кавычки и пробел";
+    const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры и пробел";
+    const popupCyrillicSpaceText = "Используйте только кириллицу и пробелы";
+
+    function checkFieldNumber(min, max, value, popup, isInt) {
+        var intgr = Number.isInteger(value);
+
+        if (isInt == true && intgr == false && value != 0) {
+            popup.innerText = "Вводимое число должно быть целым";
+            popup.style.display = "block";
+            return false;
+        }
+
+        if (value >= min && value <= max){
+            popup.innerText = "";
+            popup.style.display = "none";
+            return true;
+        }else{
+            popup.innerText = `Вводимое значение должно быть в диапазоне от ${min} до ${max}`;
+            popup.style.display = "block";
+            return false;
+        }
+    }
+
+    function productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) {
+        var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText);
+        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberSpace, descriptionProductPopup, popupCyrillicNumberSpaceText);
+        var statusField3 = checkFieldNumber(1, 900000, priceProduct, priceProductPopup, false);
+        var statusField4 = checkFieldNumber(1, 1000000, countProduct, countProductPopup, true);
+
+        if (statusField1 == true && statusField2 == true &&
+            statusField2 == true && statusField3 == true) 
+        {
+            return true;
+        }
+        else {
+            return false;
+        } 
+    }
+
+    function productTypeValidate(nameProductType) {
+        if (checkField(3, 20, nameProductType, regCyrillicSpace, nameProductTypePopup, popupCyrillicSpaceText) == true){
+            return true;
+        }else{
+            return false;
+        }
     }
 </script>

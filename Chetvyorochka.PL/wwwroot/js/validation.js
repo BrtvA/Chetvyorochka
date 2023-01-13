@@ -1,9 +1,16 @@
 ﻿/////Валидация данных
-let regCyrillic = /^[А-Яа-яЁё]+$/;
-let regLatinNumber = /^[A-Za-z0-9]+$/;
 
-const popupLatinNumberText = "Используйте только латинские символы и цифры";
-const popupCyrillicText = "Используйте только кириллицу";
+//let regCyrillic = /^[А-Яа-яЁё]\S+$/;
+//let regLatinNumber = /^[A-Za-z0-9]\S+$/;
+
+//let regCyrillicNumberSpace = /^[А-Яа-яЁё0-9]+$/;
+//let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё]+$/;
+
+//const popupLatinNumberText = "Используйте только латинские символы и цифры";
+//const popupCyrillicText = "Используйте только кириллицу";
+
+//const popupCyrillicLatinSpaceText = "Используйте только кириллицу ,латиницу и пробел";
+//const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры и пробел";
 
 function validate(regex, value) {
     return regex.test(value);

@@ -30,7 +30,7 @@
                        placeholder=" ">
                 <lable class="field_lable">Логин</lable>
                 <lable id="usernameLoginPopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
             </div>
             <div class="field_group">
@@ -40,7 +40,7 @@
                        placeholder=" ">
                 <lable class="field_lable">Пароль</lable>
                 <lable id="passwordLoginPopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
             </div>
             <button id="loginBtn"
@@ -60,7 +60,7 @@
                        autocomplete="off">
                 <lable class="field_lable">*Логин</lable>
                 <lable id="usernamePopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
                 <ul class="input-requirements">
                     <li>Используйте только латиницу и цифры</li>
@@ -76,7 +76,7 @@
                        autocomplete="off">
                 <lable class="field_lable">*Имя</lable>
                 <lable id="firstNamePopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
                 <ul class="input-requirements">
                     <li>Используйте только кириллицу</li>
@@ -91,7 +91,7 @@
                        autocomplete="off">
                 <lable class="field_lable">Фамилия</lable>
                 <lable id="lastNamePopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
                 <ul class="input-requirements">
                     <li>Используйте только кириллицу</li>
@@ -105,7 +105,7 @@
                        placeholder=" ">
                 <lable class="field_lable">*Пароль</lable>
                 <lable id="passwordPopup"
-                       class="popup_span">
+                       class="popup_lable">
                 </lable>
                 <ul class="input-requirements">
                     <li>Используйте только латиницу и цифры</li>
@@ -150,14 +150,17 @@
 
     /////Запрос на аутентификацию пользователя
     async function login() {
-        if (loginValidate()==true){
+        var username = usernameLogin.value.trim();
+        var password = passwordLogin.value.trim();
+
+        if (loginValidate(username, password) == true) {
             errorMessage.innerText = '';
             const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    Login: usernameLogin.value,
-                    Password: passwordLogin.value
+                    Login: username,
+                    Password: password
                 })
             });
             const message = await response.json();
@@ -178,16 +181,21 @@
 
     /////Запрос на регистрацию пользователя
     async function register() {
-        if (registerValidate()==true){
+        var username = usernameRegister.value.trim();
+        var firstName = firstNameRegister.value.trim();
+        var lastName = lastNameRegister.trim();
+        var password = passwordRegister.value.trim();
+
+        if (registerValidate(username, firstName, lastName, password) == true) {
             errorMessage.innerText = '';
             const response = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    Login: usernameRegister.value,
-                    FistName: firstNameRegister.value,
-                    LastName: lastNameRegister.value,
-                    Password: passwordRegister.value
+                    Login: username,
+                    FistName: firstName,
+                    LastName: lastName,
+                    Password: password
                 })
             });
             const message = await response.json();
@@ -230,6 +238,12 @@
     }
 
     /////Валидация данных
+    let regCyrillic = /^[А-Яа-яЁё]\S+$/;
+    let regLatinNumber = /^[A-Za-z0-9]\S+$/;
+
+    const popupLatinNumberText = "Используйте только латинские символы и цифры";
+    const popupCyrillicText = "Используйте только кириллицу";
+
     function checkFieldWithNull(minLength, maxLength, value, regex, popup, popupRegexText) {
         if (checkLength(minLength, maxLength, value.length) == true) {
             if (validate(regex, value) == true) {
@@ -254,9 +268,9 @@
         }
     }
 
-    function loginValidate(){
-        var statusField1 = checkField(5, 20, usernameLogin.value, regLatinNumber, usernameLoginPopup, popupLatinNumberText);
-        var statusField2 = checkField(4, 20, passwordLogin.value, regLatinNumber, passwordLoginPopup, popupLatinNumberText);
+    function loginValidate(username, password) {
+        var statusField1 = checkField(5, 20, username, regLatinNumber, usernameLoginPopup, popupLatinNumberText);
+        var statusField2 = checkField(4, 20, password, regLatinNumber, passwordLoginPopup, popupLatinNumberText);
         if (statusField1 == true && statusField2 == true) {
             return true;
         }else{
@@ -264,11 +278,11 @@
         }
     }
 
-    function registerValidate(){
-        var statusField1 = checkField(5, 20, usernameRegister.value, regLatinNumber, usernamePopup, popupLatinNumberText);
-        var statusField2 = checkField(1, 20, firstNameRegister.value, regCyrillic, firstNamePopup, popupCyrillicText);
-        var statusField3 = checkFieldWithNull(1, 20, lastNameRegister.value, regCyrillic, lastNamePopup, popupCyrillicText);
-        var statusField4 = checkField(4, 20, passwordRegister.value, regLatinNumber, passwordPopup, popupLatinNumberText);
+    function registerValidate(username, firstName, lastName, password) {
+        var statusField1 = checkField(5, 20, username, regLatinNumber, usernamePopup, popupLatinNumberText);
+        var statusField2 = checkField(1, 20, firstName, regCyrillic, firstNamePopup, popupCyrillicText);
+        var statusField3 = checkFieldWithNull(1, 20, lastName, regCyrillic, lastNamePopup, popupCyrillicText);
+        var statusField4 = checkField(4, 20, password, regLatinNumber, passwordPopup, popupLatinNumberText);
 
         if (statusField1 == true && statusField2 == true &&
             statusField2 == true && statusField3 == true) 
