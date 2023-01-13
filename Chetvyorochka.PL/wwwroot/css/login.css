@@ -101,11 +101,10 @@
     font-size: 15px;
 }
 
-.popup_span {
+.popup_lable {
     display: none;
     font-size: 15px;
     color: #c90404;
-    /*background-color: transparent;*/
     margin: 10px;
 }
 
