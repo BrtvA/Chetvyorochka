@@ -17,17 +17,21 @@
                 </h2>
             </div>
             <div id="cashDiv"
-                 style="display:none">
-                <input id="cashCount"
-                       type="number"
-                       class="cashTopic_input">
-                <button class="topUpTopic_button"
+                 class="cash_group">
+                <div class="cashCount_group">
+                    <input id="cashCount"
+                           type="number"
+                           class="cashTopic_input"/>
+                    <button class="topUpTopic_button"
                         onclick="addCash()">
-                    Пополнить
-                </button>
+                        Пополнить
+                    </button>
+                </div>
+                <lable id="cashCountPopup"
+                       class="cashPopup_lable"/>
             </div>
             <div id="topUpDiv"
-                style="display:none">
+                 style="display:none">
                 <button class="logoutTopic_button"
                         onclick="openCashTab(cashDiv, userInfoDiv, backDiv, topUpDiv)">
                     <img class="image_button"

@@ -60,16 +60,36 @@
 
 
 
+/*Область ввода суммы пополнения*/
+.cash_group{
+    display:none;
+    flex-direction:column;
+}
+
+.cashCount_group {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-items:center;
+}
 
 .cashTopic_input {
-    height: 32px;
-    width: 200px;
+    height: 30px;
+    width: 150px;
+    margin: 10px;
     font-size: 24px;
     font-weight: lighter;
     text-align: center;
     border: ridge;
     border-color: #2e00a4;
     border-radius: 10px;
+}
+
+.cashPopup_lable {
+    display: none;
+    font-size: 15px;
+    color: #c90404;
+    margin: 10px;
 }
 
 .topUpTopic_button {
@@ -91,9 +111,9 @@
 }
 
 .topUpTopic_button:active {
-   top: 1em;
-   left: 50em;
-   box-shadow: 0 0 0 60px rgba(0,0,0,.05) inset;
+    top: 1em;
+    left: 50em;
+    box-shadow: 0 0 0 60px rgba(0,0,0,.05) inset;
 }
 
 

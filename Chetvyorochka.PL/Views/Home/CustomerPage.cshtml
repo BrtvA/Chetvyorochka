@@ -6,6 +6,7 @@
 <html lang="ru">
 <head>
     <link rel="stylesheet" href="~/css/customerPage.css">
+    <script src="~/js/validation.js" asp-append-version="true"></script>
 </head>
 <body>
     <div class="form">
@@ -41,6 +42,10 @@
 
     var catalogContent = document.getElementById("catalogContent");
     var basketContent = document.getElementById("basketContent");
+
+    var cashCountInput = document.getElementById("cashCount");
+
+    var cashCountPopup = document.getElementById("cashCountPopup");
 
     var htmlContent='';
 
@@ -187,21 +192,23 @@
 
     /////Запрос на пополнение счёта пользователя
     async function addCash() {
-        var money = document.getElementById("cashCount").value;
+        var money = cashCountInput.value / 1;
 
-        const response = await fetch("/User/AddMoney", {
-            method: "POST",
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
-            body: JSON.stringify(money)
-        });
+        if (cashValidate(money)) {
+            const response = await fetch("/User/AddMoney", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(money)
+            });
 
-        const message = await response.json();
-        if (response.status == 400 || response.status == 404) {
-            openDialog(message.errorText);
-        }
-        if (response.status == 200) {
-            getUserInfo();
-            openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv);
+            const message = await response.json();
+            if (response.status == 400 || response.status == 404) {
+                openDialog(message.errorText);
+            }
+            if (response.status == 200) {
+                getUserInfo();
+                openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv);
+            }
         }
     }
 
@@ -251,10 +258,11 @@
 
     ////Управление элементами интерфейса
     function openCashTab(openDiv, closeDiv, openButton, closeButton){
-        openDiv.style.display = "block";
+        openDiv.style.display = "flex";
         closeDiv.style.display = "none";
         openButton.style.display = "block";
         closeButton.style.display = "none";
+        cashCountPopup.style.display = "none";
     }
 
     async function openTab(idDiv, element, color) {
@@ -281,6 +289,16 @@
         else{
             getUserInfo();
             startDrawBasket();
+        }
+    }
+
+    //////Валидация
+
+    function cashValidate(cashCount){
+        if (checkFieldNumber(1, 900000, cashCount, cashCountPopup, false) == true) {
+            return true;
+        }else{
+            return false;
         }
     }
 </script>
