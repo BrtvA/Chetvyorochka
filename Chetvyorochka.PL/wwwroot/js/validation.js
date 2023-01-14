@@ -1,17 +1,5 @@
 ﻿/////Валидация данных
 
-//let regCyrillic = /^[А-Яа-яЁё]\S+$/;
-//let regLatinNumber = /^[A-Za-z0-9]\S+$/;
-
-//let regCyrillicNumberSpace = /^[А-Яа-яЁё0-9]+$/;
-//let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё]+$/;
-
-//const popupLatinNumberText = "Используйте только латинские символы и цифры";
-//const popupCyrillicText = "Используйте только кириллицу";
-
-//const popupCyrillicLatinSpaceText = "Используйте только кириллицу ,латиницу и пробел";
-//const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры и пробел";
-
 function validate(regex, value) {
     return regex.test(value);
 }
@@ -38,6 +26,26 @@ function checkField(minLength, maxLength, value, regex, popup, popupRegexText) {
         }
     } else {
         popup.innerText = `Минимальное количество символов должно быть ${minLength}, максимальное - ${maxLength}`;
+        popup.style.display = "block";
+        return false;
+    }
+}
+
+function checkFieldNumber(min, max, value, popup, isInt) {
+    var intgr = Number.isInteger(value);
+
+    if (isInt == true && intgr == false && value != 0) {
+        popup.innerText = "Вводимое число должно быть целым";
+        popup.style.display = "block";
+        return false;
+    }
+
+    if (value >= min && value <= max) {
+        popup.innerText = "";
+        popup.style.display = "none";
+        return true;
+    } else {
+        popup.innerText = `Вводимое значение должно быть в диапазоне от ${min} до ${max}`;
         popup.style.display = "block";
         return false;
     }

@@ -434,6 +434,7 @@
         if (workMode == 0){
             addTypeButton.style.display="block";
             editTypeButton.style.display="none";
+            nameProductTypePopup.style.display="none";
         }
         else{
             addTypeButton.style.display = "none";
@@ -458,26 +459,6 @@
     const popupCyrillicLatinQuoteSpaceText = "Используйте только кириллицу, латиницу, кавычки и пробел";
     const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры и пробел";
     const popupCyrillicSpaceText = "Используйте только кириллицу и пробелы";
-
-    function checkFieldNumber(min, max, value, popup, isInt) {
-        var intgr = Number.isInteger(value);
-
-        if (isInt == true && intgr == false && value != 0) {
-            popup.innerText = "Вводимое число должно быть целым";
-            popup.style.display = "block";
-            return false;
-        }
-
-        if (value >= min && value <= max){
-            popup.innerText = "";
-            popup.style.display = "none";
-            return true;
-        }else{
-            popup.innerText = `Вводимое значение должно быть в диапазоне от ${min} до ${max}`;
-            popup.style.display = "block";
-            return false;
-        }
-    }
 
     function productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) {
         var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText);
