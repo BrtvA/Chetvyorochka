@@ -19,6 +19,7 @@ var app = builder.Build();
 //}
 
 app.UseMiddleware<ExceptionHandingMiddleware>();
+app.UseMiddleware<ValidationMiddleware>();
 
 app.UseStatusCodePagesWithReExecute("/Login/Index");
 
