@@ -28,7 +28,7 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Route("/api/login")]
+        [Route("/Login")]
         public async Task<IActionResult> Login([FromBody] LoginDataModel loginDataModel)
         {
             try
@@ -44,7 +44,7 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Route("/api/register")]
+        [Route("/Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDataModel registerDataModel)
         {
             try

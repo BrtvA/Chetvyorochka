@@ -185,7 +185,7 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 401 || response.status == 400) {
+            if (response.status == 400 || response.status == 401) {
                 openDialog(message.errorText);
             }
             if (response.status == 200) {
@@ -255,7 +255,7 @@
             { method: "DELETE" }
         );
         const message = await response.json();
-        if (response.status == 401 || response.status == 400) {
+        if (response.status == 400 || response.status == 401) {
             openDialog(message.errorText);
         }
         if (response.status == 200) {
@@ -359,7 +359,7 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 401 || response.status == 400) {
+            if (response.status == 400 || response.status == 401) {
                 openDialog(message.errorText);
             }
             if (response.status == 200) {
@@ -391,7 +391,7 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 401 || response.status == 404) {
+            if (response.status == 400 || response.status == 401 || response.status == 404) {
                 openDialog(message.errorText);
             }
             if (response.status == 200) {
@@ -453,7 +453,7 @@
 
     /////Валидация
     let regCyrillicNumberSpace = /^[А-Яа-яЁё0-9 ]+$/;
-    let regCyrillicSpace = /^[А-Яа-яЁё]+$/;
+    let regCyrillicSpace = /^[А-Яа-яЁё ]+$/;
     let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё" ]+$/;
 
     const popupCyrillicLatinQuoteSpaceText = "Используйте только кириллицу, латиницу, кавычки и пробел";

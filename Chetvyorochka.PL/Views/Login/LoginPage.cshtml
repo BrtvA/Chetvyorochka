@@ -155,7 +155,7 @@
 
         if (loginValidate(username, password) == true) {
             errorMessage.innerText = '';
-            const response = await fetch("/api/login", {
+            const response = await fetch("/Login", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -183,12 +183,12 @@
     async function register() {
         var username = usernameRegister.value.trim();
         var firstName = firstNameRegister.value.trim();
-        var lastName = lastNameRegister.trim();
+        var lastName = lastNameRegister.value.trim();
         var password = passwordRegister.value.trim();
 
         if (registerValidate(username, firstName, lastName, password) == true) {
             errorMessage.innerText = '';
-            const response = await fetch("/api/register", {
+            const response = await fetch("/Register", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
