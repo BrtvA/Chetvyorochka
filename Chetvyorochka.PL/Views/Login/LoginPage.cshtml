@@ -153,7 +153,7 @@
         var username = usernameLogin.value.trim();
         var password = passwordLogin.value.trim();
 
-        if (loginValidate(username, password) == true) {
+        if (loginValidate(username, password)) {
             errorMessage.innerText = '';
             const response = await fetch("/Login", {
                 method: "POST",
@@ -186,7 +186,7 @@
         var lastName = lastNameRegister.value.trim();
         var password = passwordRegister.value.trim();
 
-        if (registerValidate(username, firstName, lastName, password) == true) {
+        if (registerValidate(username, firstName, lastName, password)) {
             errorMessage.innerText = '';
             const response = await fetch("/Register", {
                 method: "POST",

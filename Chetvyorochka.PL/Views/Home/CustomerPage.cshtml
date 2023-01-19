@@ -66,13 +66,12 @@
     async function getUserInfo() {
         const response = await fetch("/User/GetInfo");
         const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
 
             userInfo.innerHTML = message.name + " " + message.lastName +"<br>" + 
                                  "Счёт: " + message.moneyCount + " рублей";
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -202,12 +201,11 @@
             });
 
             const message = await response.json();
-            if (response.status == 400 || response.status == 404) {
-                openDialog(message.errorText);
-            }
             if (response.status == 200) {
                 getUserInfo();
                 openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv);
+            }else{
+                openDialog(message.errorText);
             }
         }
     }
@@ -220,11 +218,10 @@
             body: JSON.stringify(id)
         });
         const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (basketContent.style.display == "flex"){
             startDrawBasket();
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -236,7 +233,7 @@
             body: JSON.stringify(id)
         });
         const message = await response.json();
-        if (response.status == 404) {
+        if (response.status != 200) {
             openDialog(message.errorText);
         }
         startDrawBasket();
@@ -246,13 +243,12 @@
     async function buyProducts() {
         const response = await fetch("/Basket/Buy");
         const message = await response.json();
-        if (response.status == 400) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
             getUserInfo();
             startDrawBasket();
             openDialog("Покупка осуществлена");
+        }else{
+            openDialog(message.errorText);
         }
     }
 
