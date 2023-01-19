@@ -238,59 +238,25 @@
     }
 
     /////Валидация данных
-    let regCyrillic = /^[А-Яа-яЁё]\S+$/;
-    let regLatinNumber = /^[A-Za-z0-9]\S+$/;
+    let regCyrillic = /^[А-Яа-яЁё]+$/;
+    let regLatinNumber = /^[A-Za-z0-9]+$/;
 
     const popupLatinNumberText = "Используйте только латинские символы и цифры";
     const popupCyrillicText = "Используйте только кириллицу";
 
-    function checkFieldWithNull(minLength, maxLength, value, regex, popup, popupRegexText) {
-        if (checkLength(minLength, maxLength, value.length) == true) {
-            if (validate(regex, value) == true) {
-                popup.innerText = "";
-                popup.style.display = "none";
-                return true;
-            } else {
-                popup.innerText = "Используйте только латинские символы и цифры";
-                popup.style.display = "block";
-                return false;
-            }
-        }else{
-            if (value.length == 0){
-                popup.innerText = "";
-                popup.style.display = "none";
-                return true;
-            }else{
-                popup.innerText = `Минимальное количество символов должно быть ${minLength}, максимальное - ${maxLength}`;
-                popup.style.display = "block";
-                return false;
-            }
-        }
-    }
-
     function loginValidate(username, password) {
-        var statusField1 = checkField(5, 20, username, regLatinNumber, usernameLoginPopup, popupLatinNumberText);
-        var statusField2 = checkField(4, 20, password, regLatinNumber, passwordLoginPopup, popupLatinNumberText);
-        if (statusField1 == true && statusField2 == true) {
-            return true;
-        }else{
-            return false;
-        }
+        var statusField1 = checkField(5, 20, username, regLatinNumber, usernameLoginPopup, popupLatinNumberText, false);
+        var statusField2 = checkField(4, 20, password, regLatinNumber, passwordLoginPopup, popupLatinNumberText, false);
+       return statusField1 && statusField2;
     }
 
     function registerValidate(username, firstName, lastName, password) {
-        var statusField1 = checkField(5, 20, username, regLatinNumber, usernamePopup, popupLatinNumberText);
-        var statusField2 = checkField(1, 20, firstName, regCyrillic, firstNamePopup, popupCyrillicText);
-        var statusField3 = checkFieldWithNull(1, 20, lastName, regCyrillic, lastNamePopup, popupCyrillicText);
-        var statusField4 = checkField(4, 20, password, regLatinNumber, passwordPopup, popupLatinNumberText);
+        var statusField1 = checkField(5, 20, username, regLatinNumber, usernamePopup, popupLatinNumberText, false);
+        var statusField2 = checkField(1, 20, firstName, regCyrillic, firstNamePopup, popupCyrillicText, false);
+        var statusField3 = checkField(1, 20, lastName, regCyrillic, lastNamePopup, popupCyrillicText, true);
+        var statusField4 = checkField(4, 20, password, regLatinNumber, passwordPopup, popupLatinNumberText, false);
 
-        if (statusField1 == true && statusField2 == true &&
-            statusField2 == true && statusField3 == true) 
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return statusField1 && statusField2
+            && statusField3 && statusField4;
     }
 </script>

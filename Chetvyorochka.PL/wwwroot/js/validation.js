@@ -5,17 +5,13 @@ function validate(regex, value) {
 }
 
 function checkLength(minLength, maxLength, valueLength) {
-    if (valueLength >= minLength && valueLength <= maxLength) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (valueLength >= minLength) && (valueLength <= maxLength)
 }
 
-function checkField(minLength, maxLength, value, regex, popup, popupRegexText) {
-    if (checkLength(minLength, maxLength, value.length) == true) {
-        if (validate(regex, value) == true) {
+function checkField(minLength, maxLength, value, regex, popup, popupRegexText, emptyField) {
+    var valueLength = value.length;
+    if (checkLength(minLength, maxLength, valueLength)) {
+        if (validate(regex, value)) {
             popup.innerText = "";
             popup.style.display = "none";
             return true;
@@ -25,16 +21,22 @@ function checkField(minLength, maxLength, value, regex, popup, popupRegexText) {
             return false;
         }
     } else {
-        popup.innerText = `Минимальное количество символов должно быть ${minLength}, максимальное - ${maxLength}`;
-        popup.style.display = "block";
-        return false;
+        if (valueLength == 0 && emptyField) {
+            popup.innerText = "";
+            popup.style.display = "none";
+            return true;
+        } else {
+            popup.innerText = `Минимальное количество символов должно быть ${minLength}, максимальное - ${maxLength}`;
+            popup.style.display = "block";
+            return false;
+        }
     }
 }
 
 function checkFieldNumber(min, max, value, popup, isInt) {
     var intgr = Number.isInteger(value);
 
-    if (isInt == true && intgr == false && value != 0) {
+    if (isInt && !intgr && value != 0) {
         popup.innerText = "Вводимое число должно быть целым";
         popup.style.display = "block";
         return false;
