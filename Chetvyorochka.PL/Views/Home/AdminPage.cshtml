@@ -461,26 +461,16 @@
     const popupCyrillicSpaceText = "Используйте только кириллицу и пробелы";
 
     function productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) {
-        var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText);
-        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberSpace, descriptionProductPopup, popupCyrillicNumberSpaceText);
+        var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText, false);
+        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberSpace, descriptionProductPopup, popupCyrillicNumberSpaceText, false);
         var statusField3 = checkFieldNumber(1, 900000, priceProduct, priceProductPopup, false);
         var statusField4 = checkFieldNumber(1, 1000000, countProduct, countProductPopup, true);
 
-        if (statusField1 == true && statusField2 == true &&
-            statusField2 == true && statusField3 == true) 
-        {
-            return true;
-        }
-        else {
-            return false;
-        } 
+        return statusField1 && statusField2
+            && statusField3 && statusField4;
     }
 
     function productTypeValidate(nameProductType) {
-        if (checkField(3, 20, nameProductType, regCyrillicSpace, nameProductTypePopup, popupCyrillicSpaceText) == true){
-            return true;
-        }else{
-            return false;
-        }
+        return checkField(3, 20, nameProductType, regCyrillicSpace, nameProductTypePopup, popupCyrillicSpaceText, false);
     }
 </script>

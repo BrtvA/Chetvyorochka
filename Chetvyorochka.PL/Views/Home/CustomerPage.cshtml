@@ -295,10 +295,6 @@
     //////Валидация
 
     function cashValidate(cashCount){
-        if (checkFieldNumber(1, 900000, cashCount, cashCountPopup, false) == true) {
-            return true;
-        }else{
-            return false;
-        }
+        return checkFieldNumber(1, 900000, cashCount, cashCountPopup, false);
     }
 </script>
