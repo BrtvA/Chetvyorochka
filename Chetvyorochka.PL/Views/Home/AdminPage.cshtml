@@ -176,7 +176,7 @@
     async function addProductType() {
         var nameProductType = nameProductTypeInput.value.trim();
 
-        if (productTypeValidate(nameProductType) == true) {
+        if (productTypeValidate(nameProductType)) {
             const response = await fetch("/ProductType/Add", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -185,13 +185,12 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 400 || response.status == 401) {
-                openDialog(message.errorText);
-            }
             if (response.status == 200) {
                 cleanInputField();
                 startDrawProductType();
                 openDialog("Категория добавлена");
+            }else{
+                openDialog(message.errorText);
             }
         }
     }
@@ -200,7 +199,7 @@
     async function editProductType(){
         var nameProductType = nameProductTypeInput.value.trim();
 
-        if (productTypeValidate(nameProductType) == true) {
+        if (productTypeValidate(nameProductType)) {
             const response = await fetch("/ProductType/Edit", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -210,14 +209,14 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 404) {
-                openDialog(message.errorText);
-            }
             if (response.status == 200) {
                 cleanInputField();
                 openTab('addProductDiv', 0);
                 startDrawProductType();
                 openDialog("Категория изменена");
+            }
+            else{
+                openDialog(message.errorText);
             }
         }
     }
@@ -240,12 +239,11 @@
     async function switchToEditProductType(){
         const response = await fetch(`/ProductType/Get/${productTypeListSelect.value}`);
         const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
             nameProductTypeInput.value = message.name;
             itemId = message.id
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -255,14 +253,13 @@
             { method: "DELETE" }
         );
         const message = await response.json();
-        if (response.status == 400 || response.status == 401) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
             cleanInputField();
             await startDrawProductType();
             await startDrawTableProduct();
             openDialog("Категория удалена");
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -308,9 +305,6 @@
     async function switchToEdit(id) {
         const response = await fetch(`/Product/Get/${id}`);
         const message = await response.json();
-        if (response.status == 401 || response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
             addButton.style.display = "none";
             editButton.style.display = "block";
@@ -322,6 +316,8 @@
             countProductInput.value = message.count;
 
             itemId = id;
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -330,12 +326,11 @@
             { method: "DELETE" }
         );
         const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
             startDrawTableProduct();
             openDialog("Товар удален");
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -346,7 +341,7 @@
         var priceProduct = priceProductInput.value/1;
         var countProduct = countProductInput.value/1;
 
-        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) == true){
+        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct)){
             const response = await fetch("/Product/Add", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -359,13 +354,12 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 400 || response.status == 401) {
-                openDialog(message.errorText);
-            }
             if (response.status == 200) {
                 cleanInputField();
                 startDrawTableProduct();
                 openDialog("Продукт добавлен");
+            }else{
+                openDialog(message.errorText);
             }
         }
     }
@@ -377,7 +371,7 @@
         var priceProduct = priceProductInput.value/1;
         var countProduct = countProductInput.value/1;
 
-        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) == true){
+        if (productValidate(nameProduct, descriptionProduct, priceProduct, countProduct)){
             const response = await fetch("/Product/Edit", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -391,9 +385,6 @@
                 })
             });
             const message = await response.json();
-            if (response.status == 400 || response.status == 401 || response.status == 404) {
-                openDialog(message.errorText);
-            }
             if (response.status == 200) {
 
                 addButton.style.display = "block";
@@ -405,6 +396,9 @@
 
                 openDialog("Информация обновлена");
             }
+            else{
+                openDialog(message.errorText);
+            }
         }
     }
 
@@ -412,12 +406,11 @@
     async function getUserInfo() {
         const response = await fetch("/User/GetInfo");
         const message = await response.json();
-        if (response.status == 404) {
-            openDialog(message.errorText);
-        }
         if (response.status == 200) {
 
             userInfo.innerText = message.name + " " + message.lastName;
+        }else{
+            openDialog(message.errorText);
         }
     }
 
