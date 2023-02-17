@@ -1,137 +1,131 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+@section Styles{
     <link rel="stylesheet" href="~/css/adminPage.css">
-    <script src="~/js/validation.js" asp-append-version="true"></script>
-</head>
-<body>
-    <div class="form">
-        @*Область добавления новой категории*@
-        <div id="addProductTypeDiv"
-             class="addProduct_group"
-             style="display:none; flex-direction: row;">
-            <button class="action_button"
-                    onclick="openTab('addProductDiv', 0)">
-                <img class="image_button" src="/images/icon-back2.png"/>
-            </button>
-            <div class="field_group">
-                <input type="text"
-                       id="nameProductType"
-                       class="field_input"
-                       placeholder=" ">
-                <lable class="field_lable">Новая категория</lable>
-                <lable id="nameProductTypePopup"
-                       class="popup_lable">
-                </lable>
-            </div>
-            <button id="addTypeBtn"
-                    class="action_button"
-                    onclick="addProductType()">
-                <img class="image_button" src="/images/icon-add2.png"/>
-            </button>
-            <button id="editTypeBtn"
-                    class="action_button"
-                    onclick="editProductType()"
-                    style="display:none">
-                <img class="image_button" src="/images/icon-edit.png"/>
-            </button>
+}
+
+<div class="form">
+    @*Область добавления новой категории*@
+    <div id="addProductTypeDiv"
+         class="addProduct_group"
+         style="display:none; flex-direction: row;">
+        <button class="action_button"
+                onclick="openTab('addProductDiv', 0)">
+            <img class="image_button" src="/images/icon-back2.png" />
+        </button>
+        <div class="field_group">
+            <input type="text"
+                   id="nameProductType"
+                   class="field_input"
+                   placeholder=" ">
+            <lable class="field_lable">Новая категория</lable>
+            <lable id="nameProductTypePopup"
+                   class="popup_lable">
+            </lable>
         </div>
-
-        @*Область добавления нового продукта*@
-        <div id="addProductDiv"
-             class="addProduct_group">
-            <div class="addProductType_group">
-                <button class="action_button"
-                        onclick="deleteProductType()">
-                    <img class="image_button" src="/images/icon-delete.png"/>
-                </button>
-                <select id="productTypeList"
-                        class="category_select">
-                </select>
-                <button class="action_button"
-                        onclick="openTab('addProductTypeDiv', 0)">
-                    <img class="image_button" src="/images/icon-add.png"/>
-                </button>
-                <button class="action_button"
-                        onclick="openTab('addProductTypeDiv', 1)">
-                    <img class="image_button" src="/images/icon-edit.png"/>
-                </button>
-            </div>
-            <div class="field_group">
-                <input type="text"
-                       id="nameProduct"
-                       class="field_input"
-                       placeholder=" ">
-                <lable class="field_lable">Наименование продукта</lable>
-                <lable id="nameProductPopup"
-                       class="popup_lable">
-                </lable>
-            </div>
-            <div class="field_group">
-                <input type="text"
-                       id="descriptionProduct"
-                       class="field_input"
-                       placeholder=" ">
-                <lable class="field_lable">Описание</lable>
-                <lable id="descriptionProductPopup"
-                       class="popup_lable">
-                </lable>
-            </div>
-            <div class="field_group">
-                <input type="number"
-                       id="priceProduct"
-                       class="field_input"
-                       placeholder=" ">
-                <lable class="field_lable">Цена</lable>
-                <lable id="priceProductPopup"
-                       class="popup_lable">
-                </lable>
-            </div>
-            <div class="field_group">
-                <input type="number"
-                       id="countProduct"
-                       class="field_input"
-                       placeholder=" ">
-                <lable class="field_lable">Количество</lable>
-                <lable id="countProductPopup"
-                       class="popup_lable">
-                </lable>
-            </div>
-            <button id="addBtn"
-                    class="addProduct_button"
-                    onclick="addProductInfo()">
-                Добавить
-            </button>
-            <button id="editBtn"
-                    class="addProduct_button"
-                    style="display:none"
-                    onclick="editProductInfo()">
-                Изменить
-            </button>
-        </div>
-
-        @*Таблица с продуктами*@
-        <table style='border-radius: 15px'>
-            <thead>
-                <tr>
-                    <th>Название</th>
-                    <th>Описание</th>
-                    <th>Цена, руб</th>
-                    <th>Количество, шт</th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-            <tbody id="productTableBody">
-
-            </tbody>
-        </table>
+        <button id="addTypeBtn"
+                class="action_button"
+                onclick="addProductType()">
+            <img class="image_button" src="/images/icon-add2.png" />
+        </button>
+        <button id="editTypeBtn"
+                class="action_button"
+                onclick="editProductType()"
+                style="display:none">
+            <img class="image_button" src="/images/icon-edit.png" />
+        </button>
     </div>
-</body>
-</html>
+
+    @*Область добавления нового продукта*@
+    <div id="addProductDiv"
+         class="addProduct_group">
+        <div class="addProductType_group">
+            <button class="action_button"
+                    onclick="deleteProductType()">
+                <img class="image_button" src="/images/icon-delete.png" />
+            </button>
+            <select id="productTypeList"
+                    class="category_select">
+            </select>
+            <button class="action_button"
+                    onclick="openTab('addProductTypeDiv', 0)">
+                <img class="image_button" src="/images/icon-add.png" />
+            </button>
+            <button class="action_button"
+                    onclick="openTab('addProductTypeDiv', 1)">
+                <img class="image_button" src="/images/icon-edit.png" />
+            </button>
+        </div>
+        <div class="field_group">
+            <input type="text"
+                   id="nameProduct"
+                   class="field_input"
+                   placeholder=" ">
+            <lable class="field_lable">Наименование продукта</lable>
+            <lable id="nameProductPopup"
+                   class="popup_lable">
+            </lable>
+        </div>
+        <div class="field_group">
+            <input type="text"
+                   id="descriptionProduct"
+                   class="field_input"
+                   placeholder=" ">
+            <lable class="field_lable">Описание</lable>
+            <lable id="descriptionProductPopup"
+                   class="popup_lable">
+            </lable>
+        </div>
+        <div class="field_group">
+            <input type="number"
+                   id="priceProduct"
+                   class="field_input"
+                   placeholder=" ">
+            <lable class="field_lable">Цена</lable>
+            <lable id="priceProductPopup"
+                   class="popup_lable">
+            </lable>
+        </div>
+        <div class="field_group">
+            <input type="number"
+                   id="countProduct"
+                   class="field_input"
+                   placeholder=" ">
+            <lable class="field_lable">Количество</lable>
+            <lable id="countProductPopup"
+                   class="popup_lable">
+            </lable>
+        </div>
+        <button id="addBtn"
+                class="addProduct_button"
+                onclick="addProductInfo()">
+            Добавить
+        </button>
+        <button id="editBtn"
+                class="addProduct_button"
+                style="display:none"
+                onclick="editProductInfo()">
+            Изменить
+        </button>
+    </div>
+
+    @*Таблица с продуктами*@
+    <table style='border-radius: 15px'>
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена, руб</th>
+                <th>Количество, шт</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+        </tbody>
+    </table>
+</div>
 
 <script>
     var itemId;
