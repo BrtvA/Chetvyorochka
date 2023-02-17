@@ -1,15 +1,12 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+@section Styles{
     <link rel="stylesheet" href="~/css/customerPage.css">
-    <script src="~/js/validation.js" asp-append-version="true"></script>
-</head>
-<body>
-    <div class="form">
+}
+
+<div class="form">
         <div class="typeContent_group">
             <button class="typeContent_button"
                     onclick="openTab('catalogContent',this,'#0c3cc9')"
@@ -28,9 +25,7 @@
              class="tableContent_group" 
              style="display:none">
         </div>
-    </div>
-</body>
-</html>
+</div>
 
 
 <script>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Chetvyorochka</title>
     <link rel="stylesheet" href="~/css/layout.css">
+    <script src="~/js/validation.js" asp-append-version="true"></script>
+    @RenderSectionAsync("Styles", true)
 </head>
 <body>
     <header>
@@ -21,21 +23,21 @@
                 <div class="cashCount_group">
                     <input id="cashCount"
                            type="number"
-                           class="cashTopic_input"/>
+                           class="cashTopic_input" />
                     <button class="topUpTopic_button"
-                        onclick="addCash()">
+                            onclick="addCash()">
                         Пополнить
                     </button>
                 </div>
                 <lable id="cashCountPopup"
-                       class="cashPopup_lable"/>
+                       class="cashPopup_lable" />
             </div>
             <div id="topUpDiv"
                  style="display:none">
                 <button class="logoutTopic_button"
                         onclick="openCashTab(cashDiv, userInfoDiv, backDiv, topUpDiv)">
                     <img class="image_button"
-                         src="/images/icon-money.png"/>
+                         src="/images/icon-money.png" />
                 </button>
             </div>
             <div id="backDiv"
@@ -43,14 +45,14 @@
                 <button class="logoutTopic_button"
                         onclick="openCashTab(userInfoDiv, cashDiv, topUpDiv, backDiv)">
                     <img class="image_button"
-                         src="/images/icon-back.png"/>
+                         src="/images/icon-back.png" />
                 </button>
             </div>
             <div>
                 <button class="logoutTopic_button"
                         onclick="logout()">
                     <img class="image_button"
-                         src="/images/icon-exit.png"/>
+                         src="/images/icon-exit.png" />
                 </button>
             </div>
         </div>
@@ -81,13 +83,12 @@
         window.location.href = "/Home/Logout";
     }
 
-    function openDialog(errorText){
+    function openDialog(errorText) {
         errorDialog.style.display = "flex";
         errorMessage.innerText = errorText;
     }
 
-    function closeDialog(){
+    function closeDialog() {
         errorDialog.style.display = "none";
     }
 </script>
-
