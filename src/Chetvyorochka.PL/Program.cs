@@ -67,7 +67,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
 
-app.Seed();
+app.Seed(builder);
 
 /*
 app.Run(async context =>
