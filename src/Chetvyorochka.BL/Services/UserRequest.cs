@@ -69,10 +69,9 @@ namespace Chetvyorochka.BL.Services
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(1)), // время действия 1 минуты
+                    expires: DateTime.Now.Add(TimeSpan.FromMinutes(1)), // время действия 1 минуты
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwt);
-            //return Tuple.Create(new JwtSecurityTokenHandler().WriteToken(jwt), new ClaimsIdentity(claims, "Cookies"));
         }
 
         public async Task<string> LoginAsync(LoginDataModel loginDataModel)
