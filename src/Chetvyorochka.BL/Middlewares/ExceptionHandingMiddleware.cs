@@ -1,11 +1,14 @@
 ﻿using Chetvyorochka.BL.CustomExceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,6 +60,13 @@ namespace Chetvyorochka.BL.Middlewares
                     ex.Message,
                     HttpStatusCode.BadRequest,
                     ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                await HandleExceptionAsync(httpContext,
+                    ex.Message,
+                    HttpStatusCode.InternalServerError,
+                    "База данных не доступна");
             }
             catch (Exception ex)
             {
