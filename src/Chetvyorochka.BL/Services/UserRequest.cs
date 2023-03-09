@@ -83,7 +83,7 @@ namespace Chetvyorochka.BL.Services
 
             if (HashPassword(loginDataModel.Password) == authInfo.Password)
             {
-                _logger.LogInformation($"{DateTime.UtcNow.ToLongTimeString()}: Выполнен вход пользователя {loginDataModel.Login}");
+                _logger.LogInformation($"{DateTime.Now}: Выполнен вход пользователя {loginDataModel.Login}");
                 return GenerateToken(authInfo.Login, authInfo.UserType.ToString());
             }
             else
@@ -105,7 +105,7 @@ namespace Chetvyorochka.BL.Services
             });
             await _userDbRepository.SaveAsync();
 
-            _logger.LogInformation($"{DateTime.UtcNow.ToLongTimeString()}: Выполнена регистрация пользователя {registerDataModel.Login}");
+            _logger.LogInformation($"{DateTime.Now}: Выполнена регистрация пользователя {registerDataModel.Login}");
             return GenerateToken(registerDataModel.Login, UserType.customer.ToString());
         }
 

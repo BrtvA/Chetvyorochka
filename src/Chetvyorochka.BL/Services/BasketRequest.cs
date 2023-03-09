@@ -30,7 +30,6 @@ namespace Chetvyorochka.BL.Services
             string buyInfo = await _basketDbRepository.BuyInfoAsync(login);
             if (buyInfo != "Ok")
             {
-                _logger.LogError(DateTime.UtcNow.ToLongTimeString() + ": " + buyInfo);
                 throw new BadRequestException(buyInfo);
             }
         }

@@ -43,11 +43,6 @@ namespace Chetvyorochka.BL.Services
             prodType.Id = productType.Id;
             prodType.Name = productType.Name;
 
-            //_productTypeDbRepository.Update(new ProductType
-            //{
-            //    Id = productType.Id,
-            //    Name = productType.Name
-            //});
             await _productTypeDbRepository.SaveAsync();
         }
 
