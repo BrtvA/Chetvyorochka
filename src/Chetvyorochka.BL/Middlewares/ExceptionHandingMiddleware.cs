@@ -73,7 +73,7 @@ namespace Chetvyorochka.BL.Middlewares
             HttpStatusCode httpStatusCode,
             string message)
         {
-            _logger.LogError($"{DateTime.UtcNow.ToLongTimeString()}: {exMsg}");
+            _logger.LogError($"{DateTime.Now}: {exMsg}");
 
             HttpResponse response = context.Response;
             response.ContentType = "text/html";

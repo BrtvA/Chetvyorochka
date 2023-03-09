@@ -17,7 +17,6 @@ namespace Chetvyorochka.PL.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                //Response.Redirect("/Login/Index");
                 return RedirectToAction("Index", "Login");
             }
 
@@ -35,7 +34,7 @@ namespace Chetvyorochka.PL.Controllers
         ///[Route("/api/logout")]
         public IActionResult Logout()
         {
-            _logger.LogInformation($"Пользователь {User.Identity.Name} вышел из аккаунта");
+            _logger.LogInformation($"{DateTime.Now}: Пользователь {User.Identity.Name} вышел из аккаунта");
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             Response.Cookies.Delete("Token");
             //Response.Cookies.Delete("UserType");
