@@ -21,13 +21,6 @@ namespace Chetvyorochka.PL.Controllers
         [Authorize]
         public async Task<IActionResult> GetInfo() // Информация о имени и счете покупателя
         {
-            /*
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            */
-
             try
             {
                 return Json(await _userRequest.GetUserInfoAsync(User.Identity.Name));

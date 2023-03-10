@@ -20,12 +20,10 @@ namespace Chetvyorochka.PL.Controllers
 
         [HttpPost]
         [Authorize]
-        ///[Route("/api/logout")]
         public async Task<IActionResult> Add([FromBody] Product product)
         {
             if (!User.IsInRole("admin"))
             {
-                //return RedirectToAction("Index", "Home");
                 return Unauthorized(new { errorText = "Нет доступа" });
             }
 
@@ -68,8 +66,6 @@ namespace Chetvyorochka.PL.Controllers
             if (!User.IsInRole("admin"))
             {
                 return Unauthorized(new { errorText = "Нет доступа" });
-
-                //return RedirectToAction("Index", "Home");
             }
 
             try

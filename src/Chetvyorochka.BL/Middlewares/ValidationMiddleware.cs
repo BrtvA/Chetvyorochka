@@ -31,7 +31,7 @@ namespace Chetvyorochka.BL.Middlewares
             const string regCyrillic = @"^[А-Яа-яЁё]+$";
             const string regCyrillicSpace = @"^[А-Яа-яЁё ]+$";
             const string regCyrillicLatinSpace = "^[A-Za-zА-Яа-яЁё\" ]+$";
-            const string regCyrillicNumberSpace = @"^[А-Яа-яЁё0-9 ]+$";
+            const string regCyrillicNumberPointSpace = @"^[А-Яа-яЁё0-9. ]+$";
 
             var request = httpContext.Request;
             var reqMethod = request.Method;
@@ -87,7 +87,7 @@ namespace Chetvyorochka.BL.Middlewares
                         product.Description = product.Description.Trim();
 
                         following = CheckString(3, 50, product.Name.Trim(), regCyrillicLatinSpace)
-                                 & CheckString(3, 50, product.Description.Trim(), regCyrillicNumberSpace)
+                                 & CheckString(3, 50, product.Description.Trim(), regCyrillicNumberPointSpace)
                                  & CheckLength(1, 900000, product.Price)
                                  & CheckLength(1, 1000000, (decimal)product.Count);
 

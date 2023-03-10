@@ -23,6 +23,7 @@ namespace Chetvyorochka.PL
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    options.RequireHttpsMetadata = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -31,16 +32,11 @@ namespace Chetvyorochka.PL
                         ValidAudience = AuthOptions.AUDIENCE,
                         ValidateLifetime = true,
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
-            /*
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                            .AddCookie(options => //CookieAuthenticationOptions
-                            {
-                                options.LoginPath = "/Login/Index";
-                            });
-            */
+            
             builder.Services.AddScoped<IBasketRequest, BasketRequest>();
             builder.Services.AddScoped<IProductRequest, ProductRequest>();
             builder.Services.AddScoped<IUserRequest, UserRequest>();

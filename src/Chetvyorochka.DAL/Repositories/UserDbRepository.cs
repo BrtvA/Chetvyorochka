@@ -33,21 +33,9 @@ namespace Chetvyorochka.DAL.Repositories
             await _db.Users.AddAsync(user);
         }
 
-        public async Task DeleteAsync(string login)
-        {
-            User? user = await _db.Users.FindAsync(login);
-            if (user != null)
-                _db.Users.Remove(user);
-        }
-
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
-        }
-
-        public void Update(User user)
-        {
-            _db.Entry(user).State = EntityState.Modified;
         }
 
         public void Dispose()

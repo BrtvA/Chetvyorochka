@@ -25,7 +25,6 @@ namespace Chetvyorochka.DAL.Repositories
 
         public async Task<ProductType?> GetAsync(int id)
         {
-            //return await _db.ProductTypes.FindAsync(id);
             return await _db.ProductTypes.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 

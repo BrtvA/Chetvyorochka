@@ -97,19 +97,6 @@ namespace Chetvyorochka.DAL.Repositories
             }
         }
 
-        /*
-        public async Task<bool> AreAvailable(string login, int id)
-        {
-            var count = await _db.Baskets.Where((x => x.UserLogin == login && x.ProductId == id))
-                .Join(_db.Products,
-                    u => u.ProductId,
-                    c => c.Id,
-                    (u, c) => c.Count >= u.ProductCount)
-                .FirstOrDefaultAsync();
-            return count;
-        }
-        */
-
         public async Task<int> GetProductCountAsync(string login, int id)
         {
             return await _db.Baskets.AsNoTrackingWithIdentityResolution().Where(x => x.UserLogin == login && x.ProductId == id).Select(x => x.ProductCount).FirstOrDefaultAsync();

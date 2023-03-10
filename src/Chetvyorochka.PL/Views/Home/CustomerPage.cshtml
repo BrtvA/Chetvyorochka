@@ -89,6 +89,8 @@
                 catalogContent.innerHTML += htmlContent + '</div>';
                 productTypeId = 0;
                 startDraw = false;
+            }else{
+                openDialog(message.errorText);
             }
         }
     }
@@ -134,8 +136,7 @@
             htmlContent='';
             if (message.length == 0) {
                 htmlContent = '<h2 class="mainInfo">В корзине пусто! Выберете товар из каталога.</h2>'
-            }
-            else{
+            }else{
                 message.forEach(drawBasket);
                 htmlContent = '<div class="category">' + htmlContent + '</div>';
                 drawTotalPrice(message);
@@ -179,6 +180,8 @@
         const message = await responseProductType.json();
         if (response.status == 200){
             message.forEach(item => productTypeArray[item.id] = item.name);
+        }else{
+            openDialog(message.errorText);
         }
         var statusCode = response.status;
         return statusCode;

@@ -15,7 +15,6 @@ namespace Chetvyorochka.DAL.Repositories
         Task<T?> GetAsync(int id);
         Task<T?> GetByNameAsync(string name);
         void Delete(T productType); // удаление категории
-        void Update(T productType);
         Task CreateAsync(T productType);
         Task SaveAsync();
     }
