@@ -50,24 +50,12 @@ namespace Chetvyorochka.DAL.Repositories
         public void Delete(Product product)
         {
             _db.Products.Remove(product);
-            /*
-            Product? product = await _db.Products.FindAsync(id);
-            if (product!=null)
-                _db.Products.Remove(product);
-            */
         }
 
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
         }
-
-        /*
-        public void Update(Product product)
-        {
-            _db.Entry(product).State = EntityState.Modified;
-        }
-        */
 
         public void Dispose()
         {

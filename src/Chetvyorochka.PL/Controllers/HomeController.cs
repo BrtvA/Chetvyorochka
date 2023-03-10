@@ -31,13 +31,10 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [Authorize]
-        ///[Route("/api/logout")]
         public IActionResult Logout()
         {
             _logger.LogInformation($"{DateTime.Now}: Пользователь {User.Identity.Name} вышел из аккаунта");
-            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             Response.Cookies.Delete("Token");
-            //Response.Cookies.Delete("UserType");
             return RedirectToAction("Index", "Login");
         }
     }

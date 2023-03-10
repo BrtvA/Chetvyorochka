@@ -208,8 +208,7 @@
                 openTab('addProductDiv', 0);
                 startDrawProductType();
                 openDialog("Категория изменена");
-            }
-            else{
+            }else{
                 openDialog(message.errorText);
             }
         }
@@ -222,6 +221,8 @@
         if (response.status == 200) {
             productTypeListSelect.innerHTML = '';
             message.forEach(drawProductType);
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -266,6 +267,8 @@
             contentProductTableBody.innerHTML = '';
             message.forEach(drawTableProduct);
             productTypeId = 0;
+        }else{
+            openDialog(message.errorText);
         }
     }
 
@@ -287,9 +290,11 @@
                 '<td width="15%">' + item.price + '</td>' +
                 '<td width="15%">' + item.count + '</td>' +
                 '<td width="10%">' +
-                    '<button class="action_button" onclick="switchToEdit(' + item.id + ')">' +
-                        '<img class="image_button" src="/images/icon-edit.png"/>' +
-                    '</button>' +
+                    '<a href="#productTypeList">' +
+                        '<button class="action_button" onclick="switchToEdit(' + item.id + ')">' +
+                            '<img class="image_button" src="/images/icon-edit.png"/>' +
+                        '</button>' +
+                    '</a>' +
                     '<button class="action_button" onclick="switchToDelete(' + item.id + ')">' +
                         '<img class="image_button" src="/images/icon-delete.png"/>' +
                     '</button>' +
@@ -389,8 +394,7 @@
                 startDrawTableProduct();
 
                 openDialog("Информация обновлена");
-            }
-            else{
+            }else{
                 openDialog(message.errorText);
             }
         }
@@ -401,8 +405,9 @@
         const response = await fetch("/User/GetInfo");
         const message = await response.json();
         if (response.status == 200) {
-
             userInfo.innerText = message.name + " " + message.lastName;
+        } else if (response.status == 401) {
+            logout();
         }else{
             openDialog(message.errorText);
         }
@@ -439,17 +444,17 @@
     }
 
     /////Валидация
-    let regCyrillicNumberSpace = /^[А-Яа-яЁё0-9 ]+$/;
+    let regCyrillicNumberPointSpace = /^[А-Яа-яЁё0-9. ]+$/;
     let regCyrillicSpace = /^[А-Яа-яЁё ]+$/;
     let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё" ]+$/;
 
     const popupCyrillicLatinQuoteSpaceText = "Используйте только кириллицу, латиницу, кавычки и пробел";
-    const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры и пробел";
+    const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры, точку и пробел";
     const popupCyrillicSpaceText = "Используйте только кириллицу и пробелы";
 
     function productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) {
         var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText, false);
-        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberSpace, descriptionProductPopup, popupCyrillicNumberSpaceText, false);
+        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberPointSpace, descriptionProductPopup, popupCyrillicNumberSpaceText, false);
         var statusField3 = checkFieldNumber(1, 900000, priceProduct, priceProductPopup, false);
         var statusField4 = checkFieldNumber(1, 1000000, countProduct, countProductPopup, true);
 
