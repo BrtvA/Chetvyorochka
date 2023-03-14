@@ -18,6 +18,12 @@ namespace Chetvyorochka.BL.Middlewares
     {
         private readonly RequestDelegate _next;
 
+        private const string REG_LATIN_NUMBER = @"^[A-Za-z0-9]\S+$";
+        private const string REG_CYRILLIC = @"^[А-Яа-яЁё]+$";
+        private const string REG_CYRILLIC_SPACE = @"^[А-Яа-яЁё ]+$";
+        private const string REG_CYRILLIC_LATIN_SPACE = "^[A-Za-zА-Яа-яЁё\" ]+$";
+        private const string REG_CYRILLIC_NUMBER_POINT_SPACE = @"^[А-Яа-яЁё0-9. ]+$";
+
         public ValidationMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -26,12 +32,6 @@ namespace Chetvyorochka.BL.Middlewares
         public async Task InvokeAsync(HttpContext httpContext)
         {
             bool following = true;
-
-            const string regLatinNumber = @"^[A-Za-z0-9]\S+$";
-            const string regCyrillic = @"^[А-Яа-яЁё]+$";
-            const string regCyrillicSpace = @"^[А-Яа-яЁё ]+$";
-            const string regCyrillicLatinSpace = "^[A-Za-zА-Яа-яЁё\" ]+$";
-            const string regCyrillicNumberPointSpace = @"^[А-Яа-яЁё0-9. ]+$";
 
             var request = httpContext.Request;
             var reqMethod = request.Method;
@@ -47,7 +47,7 @@ namespace Chetvyorochka.BL.Middlewares
                         loginData.Login = loginData.Login.Trim();
                         loginData.Password= loginData.Password.Trim();
 
-                        following = CheckString(5, 20, loginData.Login, regLatinNumber) & CheckString(4, 20, loginData.Password, regLatinNumber);
+                        following = CheckString(5, 20, loginData.Login, REG_LATIN_NUMBER) & CheckString(4, 20, loginData.Password, REG_LATIN_NUMBER);
 
                         AddToRequest(request, loginData);
                         break;
@@ -58,10 +58,10 @@ namespace Chetvyorochka.BL.Middlewares
                         registerData.LastName = registerData.LastName.Trim();
                         registerData.Password = registerData.Password.Trim();
 
-                        following = CheckString(5, 20, registerData.Login, regLatinNumber)
-                                 & CheckString(1, 20, registerData.FistName, regCyrillic)
-                                 & (CheckString(1, 20, registerData.LastName, regCyrillic) | CheckLength(0, 0, registerData.LastName.Length))
-                                 & CheckString(4, 20, registerData.Password, regLatinNumber);
+                        following = CheckString(5, 20, registerData.Login, REG_LATIN_NUMBER)
+                                 & CheckString(1, 20, registerData.FistName, REG_CYRILLIC)
+                                 & (CheckString(1, 20, registerData.LastName, REG_CYRILLIC) | CheckLength(0, 0, registerData.LastName.Length))
+                                 & CheckString(4, 20, registerData.Password, REG_LATIN_NUMBER);
 
                         AddToRequest(request, registerData);
                         break;
@@ -76,7 +76,7 @@ namespace Chetvyorochka.BL.Middlewares
                         ProductType? productType = await request.ReadFromJsonAsync<ProductType>();
                         productType.Name = productType.Name.Trim();
 
-                        following = CheckString(3, 20, productType.Name, regCyrillicSpace);
+                        following = CheckString(3, 20, productType.Name, REG_CYRILLIC_SPACE);
 
                         AddToRequest(request, productType);
                         break;
@@ -86,8 +86,8 @@ namespace Chetvyorochka.BL.Middlewares
                         product.Name = product.Name.Trim();
                         product.Description = product.Description.Trim();
 
-                        following = CheckString(3, 50, product.Name.Trim(), regCyrillicLatinSpace)
-                                 & CheckString(3, 50, product.Description.Trim(), regCyrillicNumberPointSpace)
+                        following = CheckString(3, 50, product.Name.Trim(), REG_CYRILLIC_LATIN_SPACE)
+                                 & CheckString(3, 50, product.Description.Trim(), REG_CYRILLIC_NUMBER_POINT_SPACE)
                                  & CheckLength(1, 900000, product.Price)
                                  & CheckLength(1, 1000000, (decimal)product.Count);
 

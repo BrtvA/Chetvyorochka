@@ -9,14 +9,10 @@ namespace Chetvyorochka.PL.Controllers
     public class BasketController : Controller
     {
         private readonly IBasketRequest _basketRequest;
-        private readonly ILogger<BasketController> _logger;
 
-        public BasketController(
-            IBasketRequest basketRequest,
-            ILogger<BasketController> logger)
+        public BasketController(BasketRequest basketRequest)
         {
             _basketRequest = basketRequest;
-            _logger = logger;
         }
 
         [HttpGet]

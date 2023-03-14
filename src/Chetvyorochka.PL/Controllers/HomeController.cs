@@ -13,7 +13,7 @@ namespace Chetvyorochka.PL.Controllers
             _logger = logger;
         }
 
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        //[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         [AllowAnonymous]
         public IActionResult Index()
         {
@@ -32,6 +32,7 @@ namespace Chetvyorochka.PL.Controllers
             }
         }
 
+        [HttpGet]
         [MyAuthorize]
         public IActionResult Logout()
         {

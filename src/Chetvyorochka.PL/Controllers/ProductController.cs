@@ -9,14 +9,10 @@ namespace Chetvyorochka.PL.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRequest _productRequest;
-        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(
-            IProductRequest productRequest,
-            ILogger<ProductController> logger)
+        public ProductController(IProductRequest productRequest)
         {
             _productRequest = productRequest;
-            _logger = logger;
         }
 
         [HttpPost]

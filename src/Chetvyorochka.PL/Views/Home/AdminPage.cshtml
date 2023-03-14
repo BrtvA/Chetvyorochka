@@ -444,17 +444,19 @@
     }
 
     /////Валидация
-    let regCyrillicNumberPointSpace = /^[А-Яа-яЁё0-9. ]+$/;
-    let regCyrillicSpace = /^[А-Яа-яЁё ]+$/;
-    let regCyrillicLatinSpace = /^[A-Za-zА-Яа-яЁё" ]+$/;
+    const REG_CYRILLIC_NUMBER_POINT_SPACE = /^[А-Яа-яЁё0-9. ]+$/;
+    const REG_CYRILLIC_SPACE = /^[А-Яа-яЁё ]+$/;
+    const REG_CYRILLIC_LATIN_SPACE = /^[A-Za-zА-Яа-яЁё" ]+$/;
 
-    const popupCyrillicLatinQuoteSpaceText = "Используйте только кириллицу, латиницу, кавычки и пробел";
-    const popupCyrillicNumberSpaceText = "Используйте только кириллицу, цифры, точку и пробел";
-    const popupCyrillicSpaceText = "Используйте только кириллицу и пробелы";
+    const POPUP_CYRILLIC_LATIN_QUOTE_SPACE_TEXT = "Используйте только кириллицу, латиницу, кавычки и пробел";
+    const POPUP_CYRILLIC_NUMBER_SPACE_TEXT = "Используйте только кириллицу, цифры, точку и пробел";
+    const POPUP_CYRILLIC_SPACE_TEXT = "Используйте только кириллицу и пробелы";
 
     function productValidate(nameProduct, descriptionProduct, priceProduct, countProduct) {
-        var statusField1 = checkField(3, 50, nameProduct, regCyrillicLatinSpace, nameProductPopup, popupCyrillicLatinQuoteSpaceText, false);
-        var statusField2 = checkField(3, 50, descriptionProduct, regCyrillicNumberPointSpace, descriptionProductPopup, popupCyrillicNumberSpaceText, false);
+        var statusField1 = checkField(3, 50, nameProduct, REG_CYRILLIC_LATIN_SPACE,
+                                      nameProductPopup, POPUP_CYRILLIC_LATIN_QUOTE_SPACE_TEXT, false);
+        var statusField2 = checkField(3, 50, descriptionProduct, REG_CYRILLIC_NUMBER_POINT_SPACE,
+                                      descriptionProductPopup, POPUP_CYRILLIC_NUMBER_SPACE_TEXT, false);
         var statusField3 = checkFieldNumber(1, 900000, priceProduct, priceProductPopup, false);
         var statusField4 = checkFieldNumber(1, 1000000, countProduct, countProductPopup, true);
 
@@ -463,6 +465,7 @@
     }
 
     function productTypeValidate(nameProductType) {
-        return checkField(3, 20, nameProductType, regCyrillicSpace, nameProductTypePopup, popupCyrillicSpaceText, false);
+        return checkField(3, 20, nameProductType, REG_CYRILLIC_SPACE,
+                          nameProductTypePopup, POPUP_CYRILLIC_SPACE_TEXT, false);
     }
 </script>

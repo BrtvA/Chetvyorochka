@@ -12,17 +12,14 @@ namespace Chetvyorochka.PL.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ILogger<LoginController> _logger;
         private readonly IUserRequest _userRequest;
         public LoginController(IUserDbRepository<User> dbRepository,
-            IUserRequest userRequest,
-            ILogger<LoginController> logger)
+                               IUserRequest userRequest)
         {
-            _logger = logger;
             _userRequest = userRequest;
         }
 
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        //[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         [AllowAnonymous]
         public IActionResult Index()
         {
