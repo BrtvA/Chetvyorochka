@@ -10,7 +10,7 @@ namespace Chetvyorochka.PL.Controllers
     {
         private readonly IBasketRequest _basketRequest;
 
-        public BasketController(BasketRequest basketRequest)
+        public BasketController(IBasketRequest basketRequest)
         {
             _basketRequest = basketRequest;
         }
