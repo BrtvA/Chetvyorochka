@@ -1,6 +1,5 @@
 ﻿using Chetvyorochka.BL.Services;
 using Chetvyorochka.PL.Filters;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chetvyorochka.PL.Controllers
