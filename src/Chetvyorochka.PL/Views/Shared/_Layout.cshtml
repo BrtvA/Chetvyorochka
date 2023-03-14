@@ -83,6 +83,12 @@
         window.location.href = "/Home/Logout";
     }
 
+    function logoutIfHtml(response) {
+        if (response.headers.get("content-type") == "text/html; charset=utf-8") {
+            logout();
+        }
+    }
+
     function openDialog(errorText) {
         errorDialog.style.display = "flex";
         errorMessage.innerText = errorText;

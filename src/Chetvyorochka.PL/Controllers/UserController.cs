@@ -7,14 +7,10 @@ namespace Chetvyorochka.PL.Controllers
     public class UserController : Controller
     {
         private readonly IUserRequest _userRequest;
-        private readonly ILogger<UserController> _logger;
 
-        public UserController(
-           IUserRequest userRequest,
-           ILogger<UserController> logger)
+        public UserController(IUserRequest userRequest)
         {
             _userRequest = userRequest;
-            _logger = logger;
         }
 
         [HttpGet]

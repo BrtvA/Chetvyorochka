@@ -303,6 +303,9 @@
 
     async function switchToEdit(id) {
         const response = await fetch(`/Product/Get/${id}`);
+
+        logoutIfHtml(response);
+
         const message = await response.json();
         if (response.status == 200) {
             addButton.style.display = "none";
@@ -324,6 +327,9 @@
         const response = await fetch(`/Product/Delete/${id}`,
             { method: "DELETE" }
         );
+
+        logoutIfHtml(response);
+
         const message = await response.json();
         if (response.status == 200) {
             startDrawTableProduct();
@@ -352,6 +358,9 @@
                     Count: countProduct
                 })
             });
+
+            logoutIfHtml(response);
+
             const message = await response.json();
             if (response.status == 200) {
                 cleanInputField();
@@ -383,6 +392,9 @@
                     Count: countProduct
                 })
             });
+
+            logoutIfHtml(response);
+
             const message = await response.json();
             if (response.status == 200) {
 
@@ -403,6 +415,9 @@
     /////Запрос информации о пользователе
     async function getUserInfo() {
         const response = await fetch("/User/GetInfo");
+
+        logoutIfHtml(response);
+
         const message = await response.json();
         if (response.status == 200) {
             userInfo.innerText = message.name + " " + message.lastName;
