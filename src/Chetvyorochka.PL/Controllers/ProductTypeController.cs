@@ -1,7 +1,9 @@
 ﻿using Chetvyorochka.BL.Services;
 using Chetvyorochka.DAL.Entities;
+using Chetvyorochka.PL.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Chetvyorochka.PL.Controllers
 {
@@ -15,14 +17,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] ProductType productType)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _productTypeRequest.AddProductTypeAsync(productType.Name);
@@ -35,19 +32,12 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                if (User.IsInRole("admin") || User.IsInRole("customer"))
-                {
-                    return Json(await _productTypeRequest.GetAllProductTypeAsync());
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                return Json(await _productTypeRequest.GetAllProductTypeAsync());
             }
             finally
             {
@@ -56,14 +46,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Get(int id)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 return Json(await _productTypeRequest.GetProductTypeAsync(id));
@@ -75,14 +60,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Edit([FromBody] ProductType productType)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _productTypeRequest.EditProductTypeAsync(productType);
@@ -95,14 +75,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _productTypeRequest.DeleteProductTypeAsync(id);

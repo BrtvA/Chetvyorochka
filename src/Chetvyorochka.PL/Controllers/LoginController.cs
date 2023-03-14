@@ -6,6 +6,7 @@ using Chetvyorochka.BL.Services;
 using Chetvyorochka.DAL.Repositories;
 using Chetvyorochka.DAL.Entities;
 using Chetvyorochka.BL.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Chetvyorochka.PL.Controllers
 {
@@ -22,13 +23,20 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            var token = Request.Cookies["Token"];
+            if (!String.IsNullOrEmpty(token))
+            {
+                Response.Cookies.Delete("Token");
+            }
             return View("~/Views/Login/LoginPage.cshtml");
         }
 
         [HttpPost]
         [Route("/Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginDataModel loginDataModel)
         {
             try
@@ -45,6 +53,7 @@ namespace Chetvyorochka.PL.Controllers
 
         [HttpPost]
         [Route("/Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterDataModel registerDataModel)
         {
             try

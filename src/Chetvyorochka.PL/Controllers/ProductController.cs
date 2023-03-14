@@ -1,5 +1,6 @@
 ﻿using Chetvyorochka.BL.Services;
 using Chetvyorochka.DAL.Entities;
+using Chetvyorochka.PL.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +20,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] Product product)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized(new { errorText = "Нет доступа" });
-            }
-
             try
             {
                 await _productRequest.AddProductAsync(product);
@@ -39,14 +35,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _productRequest.DeleteProductAsync(id);
@@ -59,15 +50,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Get(int id)
         {
-
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized(new { errorText = "Нет доступа" });
-            }
-
             try
             {
                 Product resultRequest = await _productRequest.GetProductAsync(id);
@@ -80,19 +65,12 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                if (User.IsInRole("admin") || User.IsInRole("customer"))
-                {
-                    return Json(await _productRequest.GetAllProductAsync());
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                return Json(await _productRequest.GetAllProductAsync());
             }
             finally
             {
@@ -101,14 +79,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "admin")]
         public async Task<IActionResult> Edit([FromBody] Product product)
         {
-            if (!User.IsInRole("admin"))
-            {
-                return Unauthorized(new { errorText = "Нет доступа" });
-            }
-
             try
             {
                 await _productRequest.EditProductAsync(product);

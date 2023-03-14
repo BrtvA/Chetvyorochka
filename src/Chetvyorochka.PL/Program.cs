@@ -1,19 +1,23 @@
 using Chetvyorochka.PL;
 using Chetvyorochka.BL.Middlewares;
 using Microsoft.AspNetCore.Mvc;
+using Chetvyorochka.PL.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+//Add services to the container.
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new MyAuthorizeAttribute());
+});
+
 builder.RegisterServices();
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandingMiddleware>();
 app.UseMiddleware<ValidationMiddleware>();
-
-app.UseStatusCodePagesWithReExecute("/Login/Index");
 
 app.Use(async (context, next) =>
 {

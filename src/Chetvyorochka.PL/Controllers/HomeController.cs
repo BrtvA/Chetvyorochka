@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Chetvyorochka.PL.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chetvyorochka.PL.Controllers
@@ -13,6 +14,7 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
@@ -30,7 +32,7 @@ namespace Chetvyorochka.PL.Controllers
             }
         }
 
-        [Authorize]
+        [MyAuthorize]
         public IActionResult Logout()
         {
             _logger.LogInformation($"{DateTime.Now}: Пользователь {User.Identity.Name} вышел из аккаунта");
