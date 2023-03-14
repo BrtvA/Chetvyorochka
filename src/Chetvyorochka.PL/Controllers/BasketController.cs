@@ -1,6 +1,8 @@
 ﻿using Chetvyorochka.BL.Services;
+using Chetvyorochka.PL.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Chetvyorochka.PL.Controllers
 {
@@ -18,15 +20,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize(Roles = "customer")]
         public async Task<IActionResult> Buy()
         {
-
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _basketRequest.BuyProductsAsync(User.Identity.Name);
@@ -39,14 +35,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "customer")]
         public async Task<IActionResult> IncreaseCount([FromBody] int id)
         {
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _basketRequest.IncreaseCountProductAsync(User.Identity.Name, id);
@@ -59,14 +50,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "customer")]
         public async Task<IActionResult> ReduceCount([FromBody] int id)
         {
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _basketRequest.ReduceCountProductAsync(User.Identity.Name, id);
@@ -79,14 +65,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize(Roles = "customer")]
         public async Task<IActionResult> GetAll()
         {
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             return Json(await _basketRequest.GetAllBasketAsync(User.Identity.Name));
         }
     }

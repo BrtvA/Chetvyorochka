@@ -1,4 +1,5 @@
 ﻿using Chetvyorochka.BL.Services;
+using Chetvyorochka.PL.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [MyAuthorize]
         public async Task<IActionResult> GetInfo() // Информация о имени и счете покупателя
         {
             try
@@ -32,14 +33,9 @@ namespace Chetvyorochka.PL.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [MyAuthorize(Roles = "customer")]
         public async Task<IActionResult> AddMoney([FromBody] decimal money)
         {
-            if (!User.IsInRole("customer"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
                 await _userRequest.AddMoneyAsync(User.Identity.Name, money);

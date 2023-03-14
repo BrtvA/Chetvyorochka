@@ -6,6 +6,7 @@ using Chetvyorochka.BL.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Chetvyorochka.PL.Filters;
 
 namespace Chetvyorochka.PL
 {
